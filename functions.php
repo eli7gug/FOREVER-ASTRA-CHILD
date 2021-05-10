@@ -28,6 +28,11 @@ function child_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
 add_theme_support('woocommerce');
 
+/**
+ * Ajax Functions
+ */
+require get_theme_file_path() . '/ajax-functions.php';
+
 
 /**
  * Add SKU before price
@@ -418,9 +423,16 @@ function wprdcv_param_redirect(){
     if(!empty($current_meta_agent)){
         if( !is_admin() && !isset($_GET['agent']) ){
             if($userdata){
-                //$location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-                //$location .= "?agent=$current_meta_agent";
-                $location = esc_url(add_query_arg('agent', $current_meta_agent));
+                $location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+                //some parameters are set
+                if(count($_GET)) {
+                    $location .= "&agent=$current_meta_agent";
+               }
+               else{
+                $location .= "?agent=$current_meta_agent";
+               }
+                
+                //$location = esc_url(add_query_arg('agent', $current_meta_agent));
             }
             wp_redirect( $location );
         }
@@ -436,6 +448,48 @@ function wprdcv_param_redirect(){
 
 }
 
-
-//on init , if has agent parameter in url, and not have already agent id, on edit details save the agent id in user meta
 add_action('template_redirect', 'wprdcv_param_redirect'); 
+
+//add CC field under price in product
+add_action( 'woocommerce_product_options_pricing', 'misha_adv_product_options');
+function misha_adv_product_options(){
+ 
+	echo '<div class="options_group">';
+ 
+	woocommerce_wp_text_input( array(
+		'id'      => 'cc_value',
+		'value'   => get_post_meta( get_the_ID(), 'cc_value', true ),
+		'label'   => __('CC value', 'astra-child'),
+	) );
+ 
+	echo '</div>';
+ 
+}
+ 
+add_action( 'woocommerce_process_product_meta', 'misha_save_fields', 10, 2 );
+function misha_save_fields( $id, $post ){
+		update_post_meta( $id, 'cc_value', $_POST['cc_value'] );
+}
+
+
+
+/*
+* quick order update quantity for adding to cart
+*/
+function cs_wc_loop_add_to_cart_scripts() {
+    $classes = get_body_class();
+    if (in_array('page-template-page-quick-order',$classes))  : ?>
+
+<script>
+    jQuery( document ).ready( function( $ ) {
+        $( document ).on( 'change', '.quantity .qty', function() {
+            $( this ).parent( '.quantity' ).next( '.add_to_cart_button' ).attr( 'data-quantity', $( this ).val() );
+        });
+    });
+</script>
+
+    <?php endif;
+}
+
+add_action( 'wp_footer', 'cs_wc_loop_add_to_cart_scripts' );
+ 

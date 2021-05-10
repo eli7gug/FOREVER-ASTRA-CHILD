@@ -22,11 +22,12 @@ jQuery(document).ready(function($){
         
         // Return `null` if the term should not be displayed
         return null;
-        }
-        
+    }
+    if ( $( "select.agent_name" ).length ) {
         $("select.agent_name").select2({
           matcher: matchCustom
         });
+    }
 
 
 });

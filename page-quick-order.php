@@ -23,562 +23,114 @@ get_header(); ?>
 		<div class="quick-order woocommerce">
 		  <div class="quick-order-right">
 		    <h1>הזמנה מהירה</h1>
-			
 			<div class="cart-search">
 				<div class="search-by-sku">
-					<input type="search" placeholder="הוספה מהירה ע''י מקט #">
+					<input type="search" placeholder="הוספה מהירה ע''י מקט #" id="search_sku_term" name="search_sku_term">
 				</div>
 				<div class="search-by-name">
-					<input type="search" placeholder="הוספה מהירה ע''י שם המוצר">
+					<input type="search" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="הוספה מהירה ע''י שם המוצר">
 				</div>
 			</div>
-
+			<div class="pdt_msg_error"></div>
 			<div class="quick-order-accordion">
-			
-				<!-- Accordion row -->
-				<button class="accordion">משקאות</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">תוספי תזונה</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
+				<?php
+					$args = array(
+					'orderby'    => 'title',
+					'order'      => 'ASC',
+					'hide_empty'   => true,
+				);
+				$product_categories = get_terms( 'product_cat', $args );
+				$count = count($product_categories);
+				if ( $count > 0 ){
+					foreach ( $product_categories as $product_category ) {
+						echo '<button class="accordion">' . $product_category->name . '</button>';
+						$args = array(
+							'posts_per_page' => -1,
+							'tax_query' => array(
+								'relation' => 'AND',
+								array(
+									'taxonomy' => 'product_cat',
+									'field' => 'slug',
+									'terms' => $product_category->slug
+								)
+							),
+							'post_type' => array('product', 'product_variation'),
+							'orderby' => 'title,'
+						);
+						$products = new WP_Query( $args );
 
-				<!-- Accordion row -->
-				<button class="accordion">מהכוורת</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">טיפוח אישי</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">טיפוח העור</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">טיפוח עור הפנים</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">ניהול משקל ותזונה</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
-				<!-- Accordion row -->
-				<button class="accordion">עזרים</button>
-				<div class="panel">
-				  <form class="woocommerce-cart-form" action="" method="post">
-				  <table class="quick-order-accordion-table" cellspacing="0">
-				    <thead>
-					<tr>
-					  <th class="product-sku">מק"ט</th>
-					  <th class="product-name">מוצר</th>
-					  <th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-					  <th class="product-quantity">כמות</th>
-					  <th class="product-subtotal">מחיר ליחידה</th>
-					</tr>
-					</thead>
-					<tbody>
-					<!-- First example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /First example row -->
-					<!-- Second example row -->
-					<tr>
-					  <td class="product-sku" data-title="מקט">
-					    015
-					  </td>
-					  <td class="product-name" data-title="מוצר">
-					    <a href="https://forever.ussl.shop/product/%d7%90%d7%9c%d7%95-%d7%a4%d7%99%d7%a8%d7%a1%d7%98/">אלו פירסט</a>
-					  </td>
-					  <td class="product-cc" data-title="CC">
-					    0.101
-					  </td>
-					  <td class="product-quantity" data-title="כמות">
-							<div class="quantity buttons_added"><a href="javascript:void(0)" class="minus">-</a>
-							<label class="screen-reader-text" for="quantity_608ff0c48e907">כמות של אלו פירסט</label>
-							<input type="number" id="quantity_608ff0c48e907" class="input-text qty text" step="1" min="0" max="" name="cart[8c19f571e251e61cb8dd3612f26d5ecf][qty]" value="3" title="כמות" size="4" placeholder="" inputmode="numeric">
-							<a href="javascript:void(0)" class="plus">+</a>
-							</div>
-					  </td>
-					  <td class="product-subtotal" data-title="סכום ביניים">
-					    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>54.99</bdi></span>
-					  </td>
-					</tr>
-					<!-- /Second example row -->
-					
-					<tbody>
-				  </table>
-				  </form>
-				</div>
-				<!-- /Accordion row -->
-				
+						?>
+						<div class="panel">
+							
+								<table class="quick-order-accordion-table" cellspacing="0">
+									<thead>
+										<tr>
+											<th class="product-sku">מק"ט</th>
+											<th class="product-name">מוצר</th>
+											<th class="product-cc">ערך <span class="cc-font"> CC</span></th>
+											<th class="product-quantity">כמות</th>
+											<th class="product-subtotal">מחיר ליחידה</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php while ( $products->have_posts() ) {
+											$products->the_post();
+											global $post, $product;
+											?>
+												<tr class="<?php echo $product->get_id();?>">
+													<td class="product-sku" data-title="מקט">
+														<?php echo $product->get_sku(); ?>
+													</td>
+													<td class="product-name" data-title="מוצר">
+														<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+													</td>
+													<td class="product-cc" data-title="CC">
+														<?php echo $product->get_meta('cc_value');?>
+													</td>
+													
+														<td class="product-quantity" data-title="כמות">
+                                                        <?php
+                                                         if(isset($_GET['agent'])){
+                                                             $agent = $_GET['agent'];
+                                                         }
+                                                        ?>
+														<form class="cart" action="<?php echo esc_url( $product->add_to_cart_url().'&agent='.$agent.'' ); ?>"  method="post" enctype="multipart/form-data">
+															<?php 
+															
+															$link = array(
+																'url'   => '',
+																'label' => '',
+																'class' => ''
+															);
+															if ( $product->is_purchasable() ) {
+																$link['url']    = apply_filters( 'add_to_cart_url', esc_url( $product->add_to_cart_url() ) );
+																$link['label']  = apply_filters( 'add_to_cart_text', __( 'Add to cart', 'woocommerce' ) );
+																$link['class']  = apply_filters( 'add_to_cart_class', 'add_to_cart_button' );
+															} else {
+																$link['url']    = apply_filters( 'not_purchasable_url', get_permalink( $product->id ) );
+																$link['label']  = apply_filters( 'not_purchasable_text', __( 'Product not available', 'astra-child' ) );
+															}
+															
+															
+															woocommerce_quantity_input();
+															echo sprintf( '<button type="submit" data-product_id="%s" data-product_sku="%s" data-quantity="1" class="%s button product_type_simple">%s</button>', esc_attr( $product->id ), esc_attr( $product->get_sku() ), esc_attr( $link['class'] ), esc_html( $link['label'] ) ); 
+															?>
+															</form>
+														</td>
+													
+													<td class="product-subtotal" data-title="סכום ביניים">
+														<?php echo wc_price($product->get_price());?>
+													</td>
+												</tr>
+											<?php
+										}?>
+									</tbody>
+								</table>
+							
+						</div>
+					<?php }
+				}
+				?>
 				
 				<!-- Script for accordion -->
 				<script>
@@ -586,15 +138,15 @@ get_header(); ?>
 				var i;
 
 				for (i = 0; i < acc.length; i++) {
-				  acc[i].addEventListener("click", function() {
+					acc[i].addEventListener("click", function() {
 					this.classList.toggle("active");
 					var panel = this.nextElementSibling;
 					if (panel.style.maxHeight) {
-					  panel.style.maxHeight = null;
+						panel.style.maxHeight = null;
 					} else {
-					  panel.style.maxHeight = panel.scrollHeight + "px";
+						panel.style.maxHeight = panel.scrollHeight + "px";
 					} 
-				  });
+					});
 				}
 				</script>
 			
