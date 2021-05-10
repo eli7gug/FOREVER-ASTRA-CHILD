@@ -26,62 +26,75 @@ $allowed_html = array(
 		'href' => array(),
 	),
 );
+$user = wp_get_current_user();
+$user_info = get_userdata($user->ID);
+$meta_phone = get_user_meta($user->ID, 'billing_phone')[0];
+$meta_name = get_user_meta($user->ID, 'first_name')[0].' '.get_user_meta($user->ID, 'last_name')[0];
+$meta_email = $user_info->user_email;
+$registered_date = $user_info->user_registered;
+$meta_birthday = get_user_meta($user->ID, 'account_birth_date')[0];  
+$meta_id = get_user_meta($user->ID, 'account_id')[0]; 
+$meta_num = get_user_meta($user->ID, 'priority_customer_number')[0]; 
+$meta_city = get_user_meta($user->ID, 'billing_city')[0];
+$meta_address1 = get_user_meta($user->ID, 'billing_address_1')[0];
+$meta_address2 = get_user_meta($user->ID, 'billing_address_2')[0];
+$meta_postcode = get_user_meta($user->ID, 'billing_postcode')[0];
+
+$current_meta_agent = get_user_meta($user->ID, 'agent_name')[0];
+$current_meta_agent_name = get_user_meta($current_meta_agent, 'first_name')[0].' '.get_user_meta($current_meta_agent, 'last_name')[0] ;
+$current_meta_agent_info = get_userdata($current_meta_agent);
+$current_meta_agent_email = $current_meta_agent_info->user_email;
+$current_meta_agent_num = get_user_meta($current_meta_agent, 'priority_customer_number')[0];
 ?>
 
 <div class="dsh-account dsh-user">
 	<h3>החשבון שלי
-	<button type="button" class="dsh-edit">
-	עריכה
-	</button>
+	<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-account', $name ) ).'#details_box'; ?>" class="dsh-edit"><?php  esc_html__( 'Edit', 'woocommerce' )  ?></a>
 	</h3>
 	<div class="dsh-box">
 	  <div class="dsh-right">
-	  <!-- spans need to be dynamic -->
-	    <p>שם: <span>תמר דובלין</span></p>
-		<p>כתובת מייל: <span>tamar@domain.com</span></p>
-		<p>טלפון: <span>000-0000000</span></p>
-		<p>מס' תעודת זהות: <span>000000000</span></p>
+			<p>שם: <span><?php echo $meta_name ?></span></p>
+			<p>כתובת מייל: <span><?php echo $meta_email ?></span></p>
+			<p>טלפון: <span><?php echo $meta_phone ?></span></p>
+			<p>מס' תעודת זהות: <span><?php echo $meta_id ?></span></p>
 	  </div>
 	  <div class="dsh-left">
-	    <!-- spans need to be dynamic -->
-	    <p>מספר משווק: <span>00000000000000</span></p>
-		<p>דרגה: <span>משווק/ת מורשה</span></p>
-		<p>תאריך לידה <span>31/12/1990</span></p>
-		<p>תאריך התטרפות: <span>31/12/2012</span></p>
+		<p>מספר משווק: <span><?php echo $meta_num ?></span></p>
+		<p>דרגה: <span>איזה שדה אמור להיות???</span></p> 
+		<p>תאריך לידה <span><?php echo $meta_birthday ?></span></p>
+		<p>תאריך התטרפות: <span><?php echo $registered_date ?></span></p>
 	  </div>
 	</div>
 </div>
 
 <div class="dsh-account dsh-address">
 	<h3>הכתובת שלי
-	<span class="dsh-edit">
-	עריכה
-	<span>
+	<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-account', $name ) ).'#address_box'; ?>" class="dsh-edit"><?php  esc_html__( 'Edit', 'woocommerce' )  ?></a>
 	</h3>
 	<div class="dsh-box">
-	<!-- spans need to be dynamic -->
 	  <p>
-	  <span>כתובת רחוב 123</span><br>
-	  <span>עיר / יישוב</span><br>
-	  <span>ישראל</span>
+	  <span><?php echo $meta_address1 ?><br>
+	  <span><?php echo $meta_address2 ?><br>
+	  <span><?php echo $meta_city ?></span><br>
+	  <span><?php echo $meta_postcode ?></span>
 	  </p>
 	</div>
 </div>
 
 <div class="dsh-account dsh-sponsor">
-	<h3>החונך/ת שלי</h3>
+	<h3>החונך/ת שלי<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-account', $name ) ).'#agent_box'; ?>" class="dsh-edit"><?php  esc_html__( 'Edit', 'woocommerce' )  ?></a></h3>
 	<div class="dsh-box">
 	  <div class="dsh-right">
 	  <!-- spans need to be dynamic -->
 	  <p>
 		<span class="sponsor-avatar"><img src="https://forever.ussl.shop/wp-content/uploads/2021/04/placeholder-1.png" /></span>
-		<span class="sponsor-title">שם חונך</span>
+		<span class="sponsor-title"><?php echo $current_meta_agent_name ?></span>
 	  </p>	  
 	  </div>
 	  <div class="dsh-left">
 	    <!-- spans need to be dynamic -->
-		<p>כתובת מייל: <span>sponsor@domain.com</span></p>
-	    <p>מספר משווק: <span>00000000000000</span></p>
+		<p>כתובת מייל: <span><?php echo $current_meta_agent_email ?></span></p>
+	    <p>מספר משווק: <span><?php echo $current_meta_agent_num ?></span></p>
 	  </div>
 	</div>
 </div>

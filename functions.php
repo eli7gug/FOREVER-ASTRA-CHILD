@@ -21,7 +21,7 @@ function child_enqueue_styles() {
 	wp_enqueue_style( 'astra-child-theme-css', get_stylesheet_directory_uri() . '/style.css', array('astra-theme-css'), ASTRA_CHILD_THEME_VERSION, 'all' );
     wp_enqueue_style( 'select2', get_stylesheet_directory_uri().'/css/select2.css' );
 	wp_enqueue_script( 'select2', get_stylesheet_directory_uri() . '/js/select2.min.js', array( 'jquery' ) );
-    wp_register_script('custom-js',get_stylesheet_directory_uri().'/js/custom.js',array(),time());
+    wp_register_script('custom-js',get_stylesheet_directory_uri().'/js/custom.js', ['jquery'],time());
     wp_enqueue_script( 'custom-js' );
 }
 
@@ -52,9 +52,21 @@ function wpd_wc_remove_product_review_tab( $tabs ) {
     if ( comments_open() ) {
         unset( $tabs['reviews'] );
     }
+    if( is_singular( 'product' ) ) {
+        $custom_terms = get_the_terms(0, 'product_cat');
+        if ($custom_terms) {
+          foreach ($custom_terms as $custom_term) {
+            $classes[] = 'product_cat_' . $custom_term->slug;
+          }
+        }
+    }
     
     return $tabs;
 }
+/**
+ * Add custom CSS class to body tag.
+ * We shall use this class into the CSS
+ */
 /**
  * Add custom CSS class to body tag.
  * We shall use this class into the CSS
@@ -63,6 +75,14 @@ add_filter( 'body_class', 'wpd_add_new_class' );
 function wpd_add_new_class( $classes ) {
     if( comments_open() && is_singular( 'product' ) ) {
         $classes[] = 'has-reviews';
+    }
+    if( is_singular( 'product' ) ) {
+      $custom_terms = get_the_terms(0, 'product_cat');
+      if ($custom_terms) {
+        foreach ($custom_terms as $custom_term) {
+          $classes[] = 'product_cat_' . $custom_term->slug;
+        }
+      }
     }
     
     return $classes;
@@ -288,12 +308,34 @@ function show_attributes() {
 // Check and validate the mobile phone
 add_action( 'woocommerce_save_account_details_errors','extra_field_validation', 20, 1 );
 function extra_field_validation( $args ){
+
     if ( isset($_POST['billing_phone']) && empty($_POST['billing_phone']) )
         $args->add( 'error', __( 'Please fill in your phone', 'woocommerce' ),'');
-    if ( isset($_POST['account_full_name']) && empty($_POST['account_full_name']) )
-        $args->add( 'error', __( 'Please fill in your full name', 'woocommerce' ),'');
+    if ( isset($_POST['account_first_name_english']) && empty($_POST['account_first_name_english']) )
+        $args->add( 'error', __( 'Please fill in your first name english', 'woocommerce' ),'');
+    if ( isset($_POST['account_last_name_english']) && empty($_POST['account_last_name_english']) )
+        $args->add( 'error', __( 'Please fill in your last name english', 'woocommerce' ),'');
     if ( isset($_POST['account_birth_date']) && empty($_POST['account_birth_date']) )
         wc_add_notice( __( 'Please enter your date of birth.', 'astra-child' ), 'error' );
+    if ( isset($_POST['account_id']) && empty($_POST['account_id']) )
+        wc_add_notice( __( 'Please enter your id.', 'astra-child' ), 'error' );
+    if ( ($_POST['agent_name'])=='0' )
+        wc_add_notice( __( 'Please choose your agent.', 'astra-child' ), 'error' );
+    if ( isset($_POST['billing_city']) && empty($_POST['billing_city']) )
+        wc_add_notice( __( 'Please enter your city.', 'astra-child' ), 'error' );
+    if ( isset($_POST['billing_address_1']) && empty($_POST['billing_address_1']) )
+        wc_add_notice( __( 'Please enter your address.', 'astra-child' ), 'error' );
+    if ( isset($_POST['billing_postcode']) && empty($_POST['billing_postcode']) )
+        wc_add_notice( __( 'Please enter your postcode.', 'astra-child' ), 'error' );
+    if ( isset($_POST['account_confirm_email']) && empty($_POST['account_confirm_email']) )
+        wc_add_notice( __( 'Please enter your confirmation email.', 'astra-child' ), 'error' );
+    if ( isset($_POST['account_confirm_email']) && !empty($_POST['account_confirm_email']) ){
+        $email1 = $_POST['account_email'];
+        $email2 = $_POST['account_confirm_email'];
+        if ( $email2 !== $email1 ) {
+            wc_add_notice(  __( 'Your email addresses do not match', 'astra-child' ), 'error' );
+        }
+    }
 }
 
 // Save the mobile phone value to user data
@@ -303,17 +345,26 @@ add_action( 'edit_user_profile_update', 'my_account_saving_extra_field' );
 function my_account_saving_extra_field( $user_id ) {
     if( isset($_POST['billing_phone']) && ! empty($_POST['billing_phone']) )
         update_user_meta( $user_id, 'billing_phone', sanitize_text_field($_POST['billing_phone']) );
-    if( isset($_POST['account_full_name']) && ! empty($_POST['account_full_name']) )
-        update_user_meta( $user_id, 'account_full_name', sanitize_text_field($_POST['account_full_name']) );
-    if( isset($_POST['account_birth_date']) && ! empty($_POST['account_full_name']) )
+    if( isset($_POST['account_first_name_english']) && ! empty($_POST['account_first_name_english']) )
+        update_user_meta( $user_id, 'account_first_name_english', sanitize_text_field($_POST['account_first_name_english']) );
+    if( isset($_POST['account_last_name_english']) && ! empty($_POST['account_last_name_english']) )
+        update_user_meta( $user_id, 'account_last_name_english', sanitize_text_field($_POST['account_last_name_english']) );
+    if( isset($_POST['account_birth_date']) && ! empty($_POST['account_birth_date']) )
         update_user_meta( $user_id, 'account_birth_date', sanitize_text_field($_POST['account_birth_date']) );
     if( isset($_POST['account_id']) && ! empty($_POST['account_id']) )
         update_user_meta( $user_id, 'account_id', sanitize_text_field($_POST['account_id']) );
-    if( isset($_POST['agent_name']) ){
-        $selected = $_POST['agent_name'];
-        echo  $selected ;
+    if( isset($_POST['agent_name']))
         update_user_meta( $user_id, 'agent_name', $_POST['agent_name'] );
-    }
+    if( isset($_POST['sponsor_contact']) )
+        update_user_meta( $user_id, 'sponsor_contact', $_POST['sponsor_contact'] );
+    if( isset($_POST['billing_city']) && ! empty($_POST['billing_city']) )
+        update_user_meta( $user_id, 'billing_city', sanitize_text_field($_POST['billing_city']) );
+    if( isset($_POST['billing_address_1']) && ! empty($_POST['billing_address_1']) )
+        update_user_meta( $user_id, 'billing_address_1', sanitize_text_field($_POST['billing_address_1']) );
+    if( isset($_POST['billing_address_2']) && ! empty($_POST['billing_address_2']) )
+        update_user_meta( $user_id, 'billing_address_2', sanitize_text_field($_POST['billing_address_2']) );
+    if( isset($_POST['billing_postcode']) && ! empty($_POST['billing_postcode']) )
+        update_user_meta( $user_id, 'billing_postcode', sanitize_text_field($_POST['billing_postcode']) );
         
 }
 
@@ -327,8 +378,12 @@ function add_extra_fields( $user )
         <h3><?php _e("Extra fields", "astra-child"); ?></h3>
         <table class="form-table">
             <tr>
-                <th><label for="account_full_name"><?php _e("Full name", "astra-child"); ?> </label></th>
-                <td><input type="text" name="account_full_name" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_full_name', true )); ?>" class="regular-text" /></td>
+                <th><label for="account_first_name_english"><?php _e("First name english", "astra-child"); ?> </label></th>
+                <td><input type="text" name="account_first_name_english" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_first_name_english', true )); ?>" class="regular-text" /></td>
+            </tr>
+            <tr>
+                <th><label for="account_last_name_english"><?php _e("Last name english", "astra-child"); ?> </label></th>
+                <td><input type="text" name="account_last_name_english" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_last_name_english', true )); ?>" class="regular-text" /></td>
             </tr>
             <tr>
                 <th><label for="account_birth_date"><?php _e("Birth Date", "astra-child"); ?> </label></th>
@@ -339,27 +394,48 @@ function add_extra_fields( $user )
                 <td><input type="text" name="account_id" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_id', true )); ?>" class="regular-text" /></td>
             </tr>
             <tr>
-                <th><label for="agent_name"><?php _e("Agent Name", "astra-child"); ?> </label></th>
+                <th><label for="agent_name"><?php _e("Agent ID", "astra-child"); ?> </label></th>
                 <td><input type="text" readonly  name="agent_name" value="<?php echo esc_attr(get_user_meta( $user->ID, 'agent_name', true )); ?>" class="regular-text" /></td>
+            </tr>
+            <tr>
+                <th><label for="sponsor_contact"><?php _e("Sponsor Contact?", "astra-child"); ?> </label></th>
+                <td>						
+                    <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_yes"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'yes' ); ?>  value="yes">
+                    <label for="signup_sponsor_contact_yes" class="">כן</label><br>
+                    <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_no"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'no' ); ?> value="no">
+                    <label for="signup_sponsor_contact_no" class="">לא</label></td>
             </tr>
         </table>
         <br />
     <?php
 }
 
+// add to url agent id on registration
+function wprdcv_param_redirect(){
+    $user_id = get_current_user_id();
+    $current_meta_agent = get_user_meta($user_id, 'agent_name', true);
+    $userdata = get_userdata( $user_id );
+    if(!empty($current_meta_agent)){
+        if( !is_admin() && !isset($_GET['agent']) ){
+            if($userdata){
+                //$location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+                //$location .= "?agent=$current_meta_agent";
+                $location = esc_url(add_query_arg('agent', $current_meta_agent));
+            }
+            wp_redirect( $location );
+        }
+    }
+    else{
+        if(isset($_GET['agent'])){
+            $user_id = get_current_user_id();
+            if($userdata){
+                update_user_meta( $user_id, 'agent_name',$_GET['agent'] );
+            }
+        }
+    }
 
-
-
-
-/*
-* Remove Default Billing and Shipping Fields
-*/
-add_filter( 'woocommerce_default_address_fields', 'misha_remove_fields' );
- 
-function misha_remove_fields( $fields ) {
- 
-	//unset( $fields[ 'first_name' ] );
-	return $fields;
- 
 }
- 
+
+
+//on init , if has agent parameter in url, and not have already agent id, on edit details save the agent id in user meta
+add_action('template_redirect', 'wprdcv_param_redirect'); 
