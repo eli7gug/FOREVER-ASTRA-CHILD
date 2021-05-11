@@ -508,4 +508,46 @@ function get_total_CC(){
    return $total_cc;
 
 }
+
+
+
+add_action( 'wp_loaded', 'custom_woocommerce_empty_cart_action', 20 );
+function custom_woocommerce_empty_cart_action() {
+    // delete all products in cart
+	if( isset( $_POST['empty_cart'] ) && $_SERVER['REQUEST_METHOD'] == "POST" ) {
+		WC()->cart->empty_cart();
+		//$referer  = wp_get_referer() ? esc_url( remove_query_arg( 'empty_cart' ) ) : wc_get_cart_url();
+		wp_safe_redirect(  wc_get_cart_url() );
+	}
+    // //search product by sku
+    // if(isset($_REQUEST['search-by-sku']) && $_REQUEST['search-by-sku'] != '') {
+    //     $sku= $_REQUEST['search-by-sku'];
+    //     global $wpdb;
+    //     $product_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", $sku ) );
+    //     if ( $product_id ){
+    //         WC()->cart->add_to_cart( $product_id, 1 );
+    //         wp_safe_redirect( wc_get_cart_url() );
+    //     }
+    //     else{
+    //         $msg = "<p class='pdt_msg_error'>".__('This product sku does not exist','astra-child'). "</p>";
+    //     }
+    // }
+    // //search product by name
+    // if(isset($_REQUEST['search-by-name']) && $_REQUEST['search-by-name'] != '') {
+    //     $product_name= $_REQUEST['search-by-name'];
+    //     $product = get_page_by_title( $product_name, OBJECT, 'product' );
+    //     $product_id = $product->ID;
+    //     if ( $product_id ){
+    //         WC()->cart->add_to_cart( $product_id, 1 );
+    //         wp_safe_redirect( wc_get_cart_url() );
+    //     }
+    //     else{
+    //         $msg = "<p class='pdt_msg_error'>".__('This product name does not exist','astra-child'). "</p>";
+    //         echo $msg;
+    //     }
+    // }
+}
+
+
+
  

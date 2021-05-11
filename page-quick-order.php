@@ -25,10 +25,10 @@ get_header(); ?>
 		    <h1>הזמנה מהירה</h1>
 			<div class="cart-search">
 				<div class="search-by-sku">
-					<input type="search" placeholder="הוספה מהירה ע''י מקט #" id="search_sku_term" name="search_sku_term">
+					<input type="search" class="search_sku_term" placeholder="הוספה מהירה ע''י מקט #" id="search_sku_term" name="search_sku_term">
 				</div>
 				<div class="search-by-name">
-					<input type="search" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="הוספה מהירה ע''י שם המוצר">
+					<input type="search" class="search_name_term" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="הוספה מהירה ע''י שם המוצר">
 				</div>
 			</div>
 			<div class="pdt_msg_error"></div>
