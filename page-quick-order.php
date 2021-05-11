@@ -154,101 +154,123 @@ get_header(); ?>
 		  </div>
 		  <div class="quick-order-left">
 		    <div class="quick-order-review">
-				<h3 id="order_review_heading">ההזמנה שלי</h3>
+				<h3 id="order_review_heading"><?php echo __('My order', 'astra-child')?></h3>
 				<div id="order_review" class="">
-				  <table class="shop_table quick_table">
-					<tbody>
-					  <!-- Cart item -->
-					  <tr class="cart_item">
-						<td class="product-name">
-							<div class="ts-product-image">
-								<img width="600" height="600" src="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" loading="lazy" srcset="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png 600w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-100x100.png 100w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-700x700.png 700w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-300x300.png 300w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-1024x1024.png 1024w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-150x150.png 150w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-768x768.png 768w, 
-								https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3.png 1100w" sizes="(max-width: 600px) 100vw, 600px">
-							</div>
-							<div class="ts-product-details">
-								<div class="quick-table-name">אלו פירסט</div>
-								<div class="quick-table-cc">CC <span>0.012</span></div>
-								<div class="quick-table-sku">מק''ט <span>#123</span></div>
-								<div class="product-quantity">כמות: <span>1</span></div>
-							</div>
-						</td>
-						<td class="product-total">
-						<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span>					
-						</td>
-					  </tr>
-					  <!-- /Cart item -->
-					  <!-- Cart item -->
-					  <tr class="cart_item">
-						<td class="product-name">
-							<div class="ts-product-image">
-								<img width="600" height="600" src="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" loading="lazy" srcset="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png 600w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-100x100.png 100w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-700x700.png 700w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-300x300.png 300w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-1024x1024.png 1024w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-150x150.png 150w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-768x768.png 768w, 
-								https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3.png 1100w" sizes="(max-width: 600px) 100vw, 600px">
-							</div>
-							<div class="ts-product-details">
-								<div class="quick-table-name">אלו פירסט</div>
-								<div class="quick-table-cc">CC <span>0.012</span></div>
-								<div class="quick-table-sku">מק''ט <span>#123</span></div>
-								<div class="product-quantity">כמות: <span>1</span></div>
-							</div>
-						</td>
-						<td class="product-total">
-						<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span>					
-						</td>
-					  </tr>
-					  <!-- /Cart item -->
-					  <!-- Cart item -->
-					  <tr class="cart_item">
-						<td class="product-name">
-							<div class="ts-product-image">
-								<img width="600" height="600" src="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" loading="lazy" srcset="https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-600x600.png 600w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-100x100.png 100w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-700x700.png 700w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-300x300.png 300w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-1024x1024.png 1024w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-150x150.png 150w, https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3-768x768.png 768w, 
-								https://forever.ussl.shop/wp-content/uploads/2021/02/aloe-first-3.png 1100w" sizes="(max-width: 600px) 100vw, 600px">
-							</div>
-							<div class="ts-product-details">
-								<div class="quick-table-name">אלו פירסט</div>
-								<div class="quick-table-cc">CC <span>0.012</span></div>
-								<div class="quick-table-sku">מק''ט <span>#123</span></div>
-								<div class="product-quantity">כמות: <span>1</span></div>
-							</div>
-						</td>
-						<td class="product-total">
-						<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span>					
-						</td>
-					  </tr>
-					  <!-- /Cart item -->
-					</tbody>
-					<tfoot>
-					  <tr class="cart-subtotal quick-subtotal">
-						<th>סה"כ</th>
-						<td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span></td>
-					  </tr>
-					  <tr class="cart-subtotal quick-vat">
-						<th>מע"מ</th>
-						<td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span></td>
-					  </tr>
-					  <tr class="cart-subtotal quick-shipping">
-						<th>משלוח</th>
-						<td><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span></td>
-					  </tr>
-					  <tr class="order-total quick-total">
-						<th>סה"כ לתשלום</th>
-						<td><strong><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₪</span>164.97</bdi></span></strong> </td>
-					  </tr>
-					  <tr class="order-total quick-cc">
-						<th>סה"כ CC</th>
-						<td><strong>0.101</strong> </td>
-					  </tr>
-					</tfoot>
-				  </table>
-				  
-				  <div class="cart-page-buttons success-pages">
-					<div class="wc-proceed-to-checkout">
-						<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">חזרה לחנות</a>
+					<table class="shop_table woocommerce-checkout-review-order-table quick_table">
+						<tbody>
+							<?php
+							do_action( 'woocommerce_review_order_before_cart_contents' );
+
+							foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+								$_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
+
+								if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_checkout_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
+									?>
+									<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
+										<td class="product-name">
+											<div class="ts-product-image">
+												<?php  $thumbnail = $_product->get_image();
+												echo $thumbnail;
+												?>
+
+											</div>
+											<div class="ts-product-details">
+												<div class="quick-table-name">
+													<?php echo apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+												</div>
+												<div class="quick-table-cc">
+													<?php 
+														$cc_val_unit     = $_product->get_meta( 'cc_value', true );
+														$qtty = $cart_item['quantity'];
+														$cc_val = (float)$cc_val_unit * $qtty;
+													echo sprintf( '%s&nbsp;%s', __('CC', 'woocommerce'),$cc_val );?>
+												</div>
+												<div class="quick-table-sku">
+													<?php echo sprintf( '%s&nbsp;%s', __('SKU', 'woocommerce'),$_product->get_sku() );?>
+												</div>
+												<?php echo apply_filters( 'woocommerce_checkout_cart_item_quantity', ' <div class="product-quantity">' . sprintf( '%s:&nbsp;%s', __('Quantity', 'woocommerce'),$cart_item['quantity'] ) . '</div>', $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+												<?php echo wc_get_formatted_cart_item_data( $cart_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+											</div>	
+										</td>
+										<td class="product-total">
+											<?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										</td>
+									</tr>
+									<?php
+								}
+							}
+
+							do_action( 'woocommerce_review_order_after_cart_contents' );
+							?>
+						</tbody>
+						<tfoot>
+
+							<tr class="cart-subtotal quick-subtotal">
+								<th><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>
+								<td><?php wc_cart_totals_subtotal_html(); ?></td>
+							</tr>
+
+							<?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
+								<tr class="cart-discount coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>">
+									<th><?php wc_cart_totals_coupon_label( $coupon ); ?></th>
+									<td><?php wc_cart_totals_coupon_html( $coupon ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+
+							<tr class="cart-subtotal quick-shipping">
+								<th><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></th>
+								<td><?php echo WC()->cart->get_cart_shipping_total() ?></td>
+							</tr>
+						
+							
+
+							<?php foreach ( WC()->cart->get_fees() as $fee ) : ?>
+								<tr class="fee">
+									<th><?php echo esc_html( $fee->name ); ?></th>
+									<td><?php wc_cart_totals_fee_html( $fee ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+
+							<?php if ( wc_tax_enabled() && ! WC()->cart->display_prices_including_tax() ) : ?>
+								<?php if ( 'itemized' === get_option( 'woocommerce_tax_total_display' ) ) : ?>
+									<?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
+										<tr class="cart-subtotal quick-vat tax-rate-<?php echo esc_attr( sanitize_title( $code ) ); ?>">
+											<th><?php echo esc_html( $tax->label ); ?></th>
+											<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
+										</tr>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<tr class="cart-subtotal quick-vat">
+										<th><?php echo esc_html( WC()->countries->tax_or_vat() ); ?></th>
+										<td><?php wc_cart_totals_taxes_total_html(); ?></td>
+									</tr>
+								<?php endif; ?>
+							<?php endif; ?>
+
+							<?php do_action( 'woocommerce_review_order_before_order_total' ); ?>
+
+							<tr class="order-total">
+								<th><?php esc_html_e( 'Total', 'woocommerce' ); ?></th>
+								<td><?php wc_cart_totals_order_total_html(); ?></td>
+							</tr>
+							<tr class="order-total quick-cc">
+							<th><?php esc_html_e( 'Total CC', 'astra-child' ); ?></th>
+							<td><strong><?php echo get_total_CC();?></strong> </td>
+						</tr>
+
+							<?php do_action( 'woocommerce_review_order_after_order_total' ); ?>
+
+						</tfoot>
+					</table>
+
+					<div class="cart-page-buttons success-pages">
+						<div class="wc-proceed-to-checkout">
+							<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">חזרה לחנות</a>
+						</div>
+						<div class="wc-proceed-to-checkout">
+							<a class="button go-to-account" href="<?php echo WC()->cart->get_checkout_url() ?>"><?php echo __('Checkout', 'woocommerce');?></a>
+						</div>
 					</div>
-					<div class="wc-proceed-to-checkout">
-						<!-- Change to dynamic link!!! --><a class="button go-to-account" href="https://forever.ussl.shop/checkout/">לתשלום</a>
-					</div>
-				  </div>
-		
 		
 				</div>
 			</div>

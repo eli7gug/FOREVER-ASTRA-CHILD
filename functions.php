@@ -492,4 +492,20 @@ function cs_wc_loop_add_to_cart_scripts() {
 }
 
 add_action( 'wp_footer', 'cs_wc_loop_add_to_cart_scripts' );
+
+/*
+* Calculate total CC
+*/
+
+function get_total_CC(){
+    $total_cc = 0;
+    foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+        $_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
+        $qtty = $cart_item['quantity'];
+        $cc = $_product->get_meta( 'cc_value', true );
+        $total_cc += ($qtty * (float)$cc);
+   }
+   return $total_cc;
+
+}
  
