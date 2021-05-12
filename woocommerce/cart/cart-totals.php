@@ -98,6 +98,10 @@ defined( 'ABSPATH' ) || exit;
 			<th><?php esc_html_e( 'Total', 'woocommerce' ); ?></th>
 			<td data-title="<?php esc_attr_e( 'Total', 'woocommerce' ); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
 		</tr>
+		<tr class="cc-total">
+			<th><?php esc_html_e( 'Total', 'woocommerce' ); ?><span class="cc-font"> CC</span></th>
+			<td><strong><?php echo get_total_CC();?></strong> </td>
+		</tr>
 
 		<?php do_action( 'woocommerce_cart_totals_after_order_total' ); ?>
 

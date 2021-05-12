@@ -254,9 +254,9 @@ get_header(); ?>
 								<td><?php wc_cart_totals_order_total_html(); ?></td>
 							</tr>
 							<tr class="order-total quick-cc">
-							<th><?php esc_html_e( 'Total CC', 'astra-child' ); ?></th>
-							<td><strong><?php echo get_total_CC();?></strong> </td>
-						</tr>
+								<th><?php esc_html_e( 'Total', 'woocommerce' ); ?><span class="cc-font"> CC</span></th>
+								<td><strong><?php echo get_total_CC();?></strong> </td>
+							</tr>
 
 							<?php do_action( 'woocommerce_review_order_after_order_total' ); ?>
 
