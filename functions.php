@@ -8,6 +8,7 @@
  * @since 1.0.0
  */
 
+
 /**
  * Define Constants
  */
@@ -415,15 +416,26 @@ function add_extra_fields( $user )
     <?php
 }
 
+function ur_theme_start_session()
+{
+    if (!session_id()){
+        session_start();
+    }
+}
+add_action("init", "ur_theme_start_session", 1);
+
+
 // add to url agent id on registration
-function wprdcv_param_redirect(){
+function add_agent_param(){
+
     $user_id = get_current_user_id();
     $current_meta_agent = get_user_meta($user_id, 'agent_name', true);
     $userdata = get_userdata( $user_id );
+    $location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+    //if register - user has agent meta
     if(!empty($current_meta_agent)){
         if( !is_admin() && !isset($_GET['agent']) ){
             if($userdata){
-                $location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
                 //some parameters are set
                 if(count($_GET)) {
                     $location .= "&agent=$current_meta_agent";
@@ -437,18 +449,32 @@ function wprdcv_param_redirect(){
             wp_redirect( $location );
         }
     }
+    // not register 
     else{
-        if(isset($_GET['agent'])){
-            $user_id = get_current_user_id();
-            if($userdata){
-                update_user_meta( $user_id, 'agent_name',$_GET['agent'] );
+        if(!isset($_COOKIE['agent']) && isset($_GET['agent']) ){
+            $agent= $_GET['agent'];
+            setcookie('agent', $_GET['agent']);
+        }
+        elseif(isset($_COOKIE['agent']) && (!$_GET['agent'])){
+            $location = esc_url(add_query_arg('agent', $_COOKIE['agent']));
+            wp_redirect($location);
+        }
+        elseif(isset($_COOKIE['agent']) && ($_GET['agent'])){
+            $agent_cookie = $_COOKIE['agent'];
+            $agent_get =  $_GET['agent'];
+            if($agent_get != $agent_cookie){
+                unset($agent_cookie);
+                // empty value and expiration one hour before
+                $res = setcookie($agent_cookie, '', time() - 3600);
+                setcookie('agent', $agent_get);
             }
         }
+          
     }
 
 }
 
-add_action('template_redirect', 'wprdcv_param_redirect'); 
+add_action('template_redirect', 'add_agent_param'); 
 
 //add CC field under price in product
 add_action( 'woocommerce_product_options_pricing', 'misha_adv_product_options');
