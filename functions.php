@@ -548,6 +548,18 @@ function custom_woocommerce_empty_cart_action() {
     // }
 }
 
+// display cc value after price
+add_filter( 'woocommerce_get_price_html', 'cc_value_after_price_loop' );
+function cc_value_after_price_loop( $price ) { 
+    global $product;
+    $cc = $product->get_meta( 'cc_value', true );
+    if ( !empty($cc) ) {
+        return $price . '<span class="product-cc">' .' | '. $cc .' CC</span>';
+    }else { 
+        return $price; 
+    } 
+}
+
 
 
  

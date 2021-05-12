@@ -25,10 +25,10 @@ get_header(); ?>
 		    <h1>הזמנה מהירה</h1>
 			<div class="cart-search">
 				<div class="search-by-sku">
-					<input type="search" class="search_sku_term" placeholder="הוספה מהירה ע''י מקט #" id="search_sku_term" name="search_sku_term">
+					<input type="search" class="search_sku_term" placeholder="<?php esc_html_e( 'Added by SKU #', 'asta-child' ); ?>" id="search_sku_term" name="search_sku_term">
 				</div>
 				<div class="search-by-name">
-					<input type="search" class="search_name_term" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="הוספה מהירה ע''י שם המוצר">
+					<input type="search" class="search_name_term" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="<?php esc_html_e( 'Added by product name', 'asta-child' ); ?>">
 				</div>
 			</div>
 			<div class="pdt_msg_error"></div>
@@ -65,11 +65,11 @@ get_header(); ?>
 								<table class="quick-order-accordion-table" cellspacing="0">
 									<thead>
 										<tr>
-											<th class="product-sku">מק"ט</th>
-											<th class="product-name">מוצר</th>
-											<th class="product-cc">ערך <span class="cc-font"> CC</span></th>
-											<th class="product-quantity">כמות</th>
-											<th class="product-subtotal">מחיר ליחידה</th>
+											<th class="product-sku"><?php esc_html_e( 'SKU', 'woocommerce' ); ?></th>
+											<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
+											<th class="product-cc"><?php esc_html_e( 'value', 'woocommerce' ); ?> <span class="cc-font"> CC</span></th>
+											<th class="product-quantity"><?php esc_html_e( 'Count', 'woocommerce' ); ?></th>
+											<th class="product-subtotal"><?php esc_html_e( 'Unit Price', 'ti-woocommerce-wishlist' ); ?> </th>
 										</tr>
 									</thead>
 									<tbody>
@@ -108,7 +108,7 @@ get_header(); ?>
 																$link['class']  = apply_filters( 'add_to_cart_class', 'add_to_cart_button' );
 															} else {
 																$link['url']    = apply_filters( 'not_purchasable_url', get_permalink( $product->id ) );
-																$link['label']  = apply_filters( 'not_purchasable_text', __( 'Product not available', 'astra-child' ) );
+																$link['label']  = apply_filters( 'not_purchasable_text', __( 'Product is invalid.', 'woocommerce' ) );
 															}
 															
 															

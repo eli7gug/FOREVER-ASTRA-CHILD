@@ -21,10 +21,10 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 <div class="cart-search">
 	<div class="search-by-sku">
-	<input type="search" placeholder="הוספה ע''י מקט #" class="search_sku_term"  name="search_sku_term">	
+	<input type="search" placeholder="<?php esc_html_e( 'Added by SKU #', 'asta-child' ); ?>" class="search_sku_term"  name="search_sku_term">	
 	</div>
 	<div class="search-by-name">
-		<input type="search" class="search_name_term" name="search_name_term" placeholder="הוספה ע''י שם המוצר">
+		<input type="search" class="search_name_term" name="search_name_term" placeholder="<?php esc_html_e( 'Added by product name', 'asta-child' ); ?>">
 	</div>
 	<div class="delete-all">
 		 <form action="" method="post">
@@ -45,7 +45,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<th class="product-thumbnail">&nbsp;</th>
 				<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
 				<th class="product-price"><?php esc_html_e( 'Price', 'woocommerce' ); ?></th>
-				<th class="product-cc"><?php esc_html_e( 'CC value', 'astra-child' ); ?></th>
+				<th class="product-cc"><?php esc_html_e( 'value', 'astra-child' ); ?><span class="cc-font"> CC</span></th>
 				<th class="product-quantity"><?php esc_html_e( 'Quantity', 'woocommerce' ); ?></th>
 				<th class="product-subtotal"><?php esc_html_e( 'Subtotal', 'woocommerce' ); ?></th>	
 				<th class="product-remove">&nbsp;</th>
@@ -105,7 +105,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 							<?php
 							echo apply_filters( 'woocommerce_checkout_cart_item_quantity', ' <strong class="product-quantity">' . sprintf( '%s&nbsp;&times;', $cart_item['quantity'] ) . '</strong>', $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 								$cc_val_unit     = $_product->get_meta( 'cc_value', true );
-								echo $cc_val_unit.' CC';
+								echo $cc_val_unit.'<span class="cc-font"> CC</span>';
 								
 							?>
 						</td>
