@@ -20,9 +20,6 @@ $allowed_html = array(
 		<div class="dsh-saved-orders-item">
 		<div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
 		</div>
-		<div class="dsh-saved-orders-item">
-		<div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
-		</div>
 	</div>
 </div>
 

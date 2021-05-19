@@ -21,3 +21,78 @@ Template: astra
     float: left;
     margin: 7px 10px;  
 }
+#wcssc-button-container  button.button{
+    margin-bottom: 20px;
+}
+
+
+
+/* register tab */
+
+#reg-tabs {
+    width: 100%;
+    border-bottom: solid 1px #CCC;
+    margin-top: 30px;
+}
+a {cursor:pointer;}
+ 
+ #reg-tabs li {
+     float:right; 
+     list-style:none; 
+     border-top:1px solid #ccc; 
+     border-left:1px solid #ccc; 
+     border-right:1px solid #ccc; 
+     margin-right:5px; 
+     border-top-left-radius:3px;  
+     border-top-right-radius:3px;
+    outline:none;
+ }
+ 
+#reg-tabs li a {
+    font-weight: bold; 
+    color: #5685bc;;
+    padding-top: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 8px; 
+    display:block; 
+    background: #FFF;
+    border-top-left-radius:3px; 
+    border-top-right-radius:3px; 
+    text-decoration:none;
+    outline:none;
+   
+}
+ 
+#reg-tabs li a.inactive{
+    padding-top:5px;
+    padding-bottom:8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    color:#666666;
+    background: #EEE;
+    outline:none;
+    border-bottom: solid 1px #CCC;
+
+}
+
+#reg-tabs li a:hover, #reg-tabs li a.inactive:hover {
+    color: #5685bc;
+    outline:none;
+}
+
+.woocommerce  .tab-reg, .woocommerce-page .tab-reg{
+    float: none!important;
+    margin: auto;
+}
+
+.woocommerce form.register{
+    border: 0;
+}
+.hide_input{
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+ 

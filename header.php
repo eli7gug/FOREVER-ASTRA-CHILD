@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <link rel="profile" href="https://gmpg.org/xfn/11">
 
+
 <?php wp_head(); ?>
 <?php astra_head_bottom(); ?>
 

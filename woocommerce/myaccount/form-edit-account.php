@@ -18,12 +18,12 @@
 defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_edit_account_form' ); ?>
-<h1 class="step-3-title">יצירת חשבון</h1>
+<h1 class="step-3-title"><?php esc_html_e( 'Account details:', 'woocommerce' ); ?></h1>
 <div class="step-3-form">
 	<form class="woocommerce-EditAccountForm edit-account" action="" method="post" <?php do_action( 'woocommerce_edit_account_form_tag' ); ?> >
 		<?php do_action( 'woocommerce_edit_account_form_start' ); ?>
 		<div class="join-form-personal-details woocommerce-signup-fields" id="details_box">
-			<h3>הפרטים שלי</h3>
+			<h3><?php esc_html_e( 'My details', 'astra-child' ); ?></h3>
 			<div class="woocommerce-signup-fields__field-wrapper">
 				<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
 					<label for="account_first_name"><?php esc_html_e( 'First name', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
@@ -57,7 +57,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 				</p>
 				<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
 				<label for="account_confirm_email"><?php esc_html_e( 'Confirm Email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
-					<input type="email" class="woocommerce-Input woocommerce-Input--email input-text" name="account_confirm_email" id="account_confirm_email" autocomplete="account_confirm_email" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_confirm_email', true )); ?>" />
+					<input type="email" class="woocommerce-Input woocommerce-Input--email input-text" name="account_confirm_email" id="account_confirm_email" value="<?php echo esc_attr( $user->user_email ); ?>" />
 				</p>
 		
 				<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
@@ -66,17 +66,22 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 				</p>
 				<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
 					<label for="account_id"><?php esc_html_e( 'ID number', 'astra-child' ); ?>&nbsp;<span class="required">*</span></label>
-					<input type="text" class="woocommerce-Input woocommerce-Input--id input-text" name="account_id" id="account_id" autocomplete="id" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_id', true )); ?>" />
+					<input type="text" class="woocommerce-Input woocommerce-Input--id input-text" name="account_id" id="account_id" value="<?php echo esc_attr(get_user_meta( $user->ID, 'account_id', true )); ?>" />
 				</p>
 	
 			</div>
 		</div>
 		<div class="dsh-changepw-form">
-			<h3>שינוי סיסמה</h1>
+			<h3><?php esc_html_e( 'Password change', 'woocommerce' ); ?></h1>
 			<div class="dsh-changepw-form-inner">
 				<fieldset>
-					<span class="dsh-changepw-retailer">מס' משווק: 
-					<!-- Change to dynamic--><span class="dsh-changepw-retailer-number">000-123-456-789</span> <!-- Change to dynamic--><span class="info">?</span>
+				<?php 
+					$user_id = get_current_user_id(); 
+					$current_meta_agent = get_user_meta($user_id, 'priority_customer_number')[0];
+					?>
+					<span class="dsh-changepw-retailer">
+						<!-- מס' משווק:  -->
+					<?php esc_html_e( 'Priority customer number:', 'astra-child' ); ?><span class="dsh-changepw-retailer-number"><?php echo ' '.$current_meta_agent;?></span><span class="info">?</span>
 					</span>
 					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 						<label for="password_current"><?php esc_html_e( 'Current password (leave blank to leave unchanged)', 'woocommerce' ); ?></label>
@@ -103,7 +108,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 			</div>
 		</div>
 		<div class="join-form-address woocommerce-signup-fields" id="address_box">
-			<h3>הכתובת שלי</h3>
+			<h3><?php esc_html_e( 'My address', 'astra-child' ); ?></h3>
 			<div class="woocommerce-signup-fields__field-wrapper">
 				<p class="form-row form-row-first address-field validate-required" id="signup_city_field">
 					<label for="billing_city" class=""><?php _e( 'City', 'woocommerce' ); ?><abbr class="required" title="נדרש">*</abbr></label>
@@ -132,49 +137,12 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 			</div>
 			
 		</div>
-		<?php 
-		 $users = get_users(); 
-		 $user_id = get_current_user_id(); 
-		 $current_meta_agent = get_user_meta($user_id, 'agent_name')[0];
-		?>
-		<div class="join-form-sponsor woocommerce-signup-fields" id="agent_box">
-			<h3>החונך שלי ב-Forever</h3>
-			<?php if (isset($_GET['agent'])) {
-				$user_info = get_userdata($_GET['agent']);
-				$user_name = $user_info->display_name;
-			?>
-				 <p><?php echo $user_name; ?></p>
-			<?php } 
-			else {?>
-			<p class="form-row form-row-wide sponsor-field sponsor-search-field">
-				<label for="signup_sponsor_find" class=""><?php echo __('Search Sponsor by name/ email/ number','astra-child')?><span class="info">?</span></label>
-			</p>
-			<?php 
-			?>
-			<p class="form-row form-row-wide sponsor-field" id="signup_sponsor_search_number_field">
-				<select name="agent_name" class="agent_name" id="agent_name">
-				<option value="0" selected ><?php echo __('Search Sponsor','astra-child')?></option>
-					<?php 
-					foreach ($users as $user) {
-						$user_info = get_userdata($user->ID);
-						$meta_number = get_user_meta($user->ID, 'priority_customer_number')[0];
-						$meta_name = get_user_meta($user->ID, 'first_name')[0].' '.get_user_meta($user->ID, 'last_name')[0];
-						$meta_email = $user_info->user_email;
-						$checked = ($current_meta_agent == $user->ID) ? 'selected="selected"' : '';
-						$user_id = $user->ID;
-						?>
-						<option data-num="<?php echo strtolower($meta_number) ?>" data-email="<?php echo $meta_email ?>" value="<?php echo $user_id ?>" <?php echo $checked ?>>
-							<?php echo $meta_name;  ?>
-						</option>
-					<?php } ?>
-				</select>
-			</p>
-			<?php }?>
-		</div>
 		<div class="join-form-sponsor-contact woocommerce-signup-fields">
-			<h3>התקשרות עם החונך </h3>
+			<h3><?php echo __('Contact with the agent','astra-child')?> </h3>
+			<!-- התקשרות עם החונך -->
 			<div class="woocommerce-signup-fields__field-wrapper">
-				<p>אני מעוניינ/ת שהחונך שלי יצור עמי קשר</p>
+				<p><?php echo __('I want my agent to contact me','astra-child')?></p>
+				<!-- <p>אני מעוניינ/ת שהחונך שלי יצור עמי קשר</p> -->
 				<p>
 					<span class="woocommerce-input-wrapper">
 						<input type="radio" class="input-radio" name="sponsor_contact"  <?php  checked( get_user_meta( get_current_user_id(), 'sponsor_contact', true ), 'yes' ); ?> value="yes">כן<br>

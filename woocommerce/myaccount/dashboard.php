@@ -68,7 +68,7 @@ $current_meta_agent_num = get_user_meta($current_meta_agent, 'priority_customer_
 </div>
 
 <div class="dsh-account dsh-address">
-	<h3>הכתובת שלי
+	<h3><?php esc_html_e( 'My address', 'astra-child' ); ?>
 	<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-account', $name ) ).'#address_box'; ?>" class="dsh-edit"><?php  esc_html__( 'Edit', 'woocommerce' )  ?></a>
 	</h3>
 	<div class="dsh-box">
@@ -82,7 +82,8 @@ $current_meta_agent_num = get_user_meta($current_meta_agent, 'priority_customer_
 </div>
 
 <div class="dsh-account dsh-sponsor">
-	<h3>החונך/ת שלי<a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-account', $name ) ).'#agent_box'; ?>" class="dsh-edit"><?php  esc_html__( 'Edit', 'woocommerce' )  ?></a></h3>
+	<h3><?php esc_html_e( 'My agent', 'astra-child' ); ?></h3>
+	<!-- החונך/ת שלי -->
 	<div class="dsh-box">
 	  <div class="dsh-right">
 	  <!-- spans need to be dynamic -->
@@ -93,8 +94,10 @@ $current_meta_agent_num = get_user_meta($current_meta_agent, 'priority_customer_
 	  </div>
 	  <div class="dsh-left">
 	    <!-- spans need to be dynamic -->
-		<p>כתובת מייל: <span><?php echo $current_meta_agent_email ?></span></p>
-	    <p>מספר משווק: <span><?php echo $current_meta_agent_num ?></span></p>
+		<p><?php esc_html_e( 'Email:', 'astra-child' ); ?> <span><?php echo ' '.$current_meta_agent_email ?></span></p>
+		<!-- כתובת מייל: -->
+	    <p><?php esc_html_e( 'Priority customer number:', 'astra-child' ); ?> <span><?php echo ' '.$current_meta_agent_num ?></span></p>
+		<!-- מספר משווק: -->
 	  </div>
 	</div>
 </div>

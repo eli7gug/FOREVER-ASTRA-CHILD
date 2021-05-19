@@ -29,6 +29,11 @@ function child_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
 add_theme_support('woocommerce');
 
+if (!session_id()){
+    session_start();
+}
+
+
 /**
  * Ajax Functions
  */
@@ -296,22 +301,25 @@ function show_attributes() {
  function my_account_menu_order() {
  	$menuOrder = array(
  		
-		'dashboard'          => __( 'החשבון שלי', 'woocommerce' ),
-		'orders'             => __( 'היסטוריית הזמנות', 'woocommerce' ),
+		'dashboard'          => __( 'Dashboard', 'woocommerce' ),
+        'edit-account'    	=> __( 'Account details', 'woocommerce' ),
+        'orders'             => __( 'Order history', 'asta-child' ),
+        'saved-carts'        => __( 'Saved Carts', 'asta-child' ),
+		//'orders'             => __( 'היסטוריית הזמנות', 'woocommerce' ),
+        'edit-address'       => __( 'Addresses', 'woocommerce' ),
 		'savedaddresses'     => __( 'כתובות שמורות', 'woocommerce' ),
- 		'savedorders'        => __( 'הזמנות שמורות', 'woocommerce' ),
- 		'edit-account'    	 => __( 'שינוי סיסמה', 'woocommerce' ),
+ 		//'savedorders'        => __( 'הזמנות שמורות', 'woocommerce' ),
  		'customer-logout'    => __( 'Logout', 'woocommerce' )
  	);
  	return $menuOrder;
  }
- //add_filter ( 'woocommerce_account_menu_items', 'my_account_menu_order' );
+ add_filter ( 'woocommerce_account_menu_items', 'my_account_menu_order' );
 
 
  /* elicheva */
 
 
-// Check and validate the mobile phone
+// Check and validate the extra account field
 add_action( 'woocommerce_save_account_details_errors','extra_field_validation', 20, 1 );
 function extra_field_validation( $args ){
 
@@ -325,7 +333,7 @@ function extra_field_validation( $args ){
         wc_add_notice( __( 'Please enter your date of birth.', 'astra-child' ), 'error' );
     if ( isset($_POST['account_id']) && empty($_POST['account_id']) )
         wc_add_notice( __( 'Please enter your id.', 'astra-child' ), 'error' );
-    if ( ($_POST['agent_name'])=='0' )
+    if (  isset($_POST['agent_name']) &&  ($_POST['agent_name'])=='0' )
         wc_add_notice( __( 'Please choose your agent.', 'astra-child' ), 'error' );
     if ( isset($_POST['billing_city']) && empty($_POST['billing_city']) )
         wc_add_notice( __( 'Please enter your city.', 'astra-child' ), 'error' );
@@ -344,11 +352,65 @@ function extra_field_validation( $args ){
     }
 }
 
-// Save the mobile phone value to user data
+/**
+* register fields Validating.
+*/
+function wooc_validate_extra_register_fields( $username, $email, $validation_errors ) {
+    if ( isset( $_POST['first_name'] ) && empty( $_POST['first_name'] ) ) {
+        $validation_errors->add( 'first_name_error', __( '<strong>Error</strong>: First name is required!', 'woocommerce' ) );
+    }
+    if ( isset( $_POST['last_name'] ) && empty( $_POST['last_name'] ) ) {
+           $validation_errors->add( 'last_name_error', __( '<strong>Error</strong>: Last name is required!.', 'woocommerce' ) );
+    }
+    if ( isset($_POST['billing_phone']) && empty($_POST['billing_phone']) )
+        $validation_errors->add( 'billing_phone_error', __( '<strong>Error</strong>: phone is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_first_name_english']) && empty($_POST['account_first_name_english']) )
+        $validation_errors->add( 'account_first_name_english_error', __( '<strong>Error</strong>: first name english is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_last_name_english']) && empty($_POST['account_last_name_english']) )
+        $validation_errors->add( 'account_last_name_english_error', __( '<strong>Error</strong>: Last name english is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_birth_date']) && empty($_POST['account_birth_date']) )
+        $validation_errors->add( 'account_birth_date_error', __( '<strong>Error</strong>: date of birth is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_id']) && empty($_POST['account_id']) )
+        $validation_errors->add( 'account_id_error', __( '<strong>Error</strong>: Id is required!.', 'woocommerce' ) );
+    if ( isset($_POST['agent_name']) && ($_POST['agent_name'])=='0' )
+        $validation_errors->add( 'agent_name_error', __( '<strong>Error</strong>: Agent is required!.', 'woocommerce' ) );
+    if ( isset($_POST['billing_city']) && empty($_POST['billing_city']) )
+        $validation_errors->add( 'billing_city_error', __( '<strong>Error</strong>: City of birth is required!.', 'woocommerce' ) );
+    if ( isset($_POST['billing_address_1']) && empty($_POST['billing_address_1']) )
+        $validation_errors->add( 'billing_address_1_error', __( '<strong>Error</strong>: Address is required!.', 'woocommerce' ) );
+    if ( isset($_POST['billing_postcode']) && empty($_POST['billing_postcode']) )
+        $validation_errors->add( 'billing_postcode_error', __( '<strong>Error</strong>: Postcode is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_confirm_email']) && empty($_POST['account_confirm_email']) )
+        $validation_errors->add( 'account_confirm_email_error', __( '<strong>Error</strong>: Confirmation email is required!.', 'woocommerce' ) );
+    if ( isset($_POST['account_confirm_email']) && !empty($_POST['account_confirm_email']) ){
+        $email1 = $_POST['email'];
+        $email2 = $_POST['account_confirm_email'];
+        if ( $email2 !== $email1 ) {
+            $validation_errors->add( 'account_confirm_email_error', __( '<strong>Error</strong>: Your email addresses do not match.', 'woocommerce' ) );
+            //wc_add_notice(  __( 'Your email addresses do not match', 'astra-child' ), 'error' );
+        }
+    }
+    return $validation_errors;
+}
+add_action( 'woocommerce_register_post', 'wooc_validate_extra_register_fields', 10, 3 );
+
+add_action( 'woocommerce_created_customer', 'register_saving_extra_field' );
+function register_saving_extra_field( $user_id ) {
+    if ( isset( $_POST['first_name'] ) ) {
+		update_user_meta( $user_id, 'first_name', wc_clean( $_POST['first_name'] ) );
+	}
+    if ( isset( $_POST['last_name'] ) ) {
+		update_user_meta( $user_id, 'last_name', wc_clean( $_POST['last_name'] ) );
+	}
+
+}
+// Save the extra field value to user data
+add_action( 'woocommerce_created_customer', 'my_account_saving_extra_field' );
 add_action( 'woocommerce_save_account_details', 'my_account_saving_extra_field', 20, 1 );
 add_action( 'personal_options_update', 'my_account_saving_extra_field' );
 add_action( 'edit_user_profile_update', 'my_account_saving_extra_field' );
 function my_account_saving_extra_field( $user_id ) {
+
     if( isset($_POST['billing_phone']) && ! empty($_POST['billing_phone']) )
         update_user_meta( $user_id, 'billing_phone', sanitize_text_field($_POST['billing_phone']) );
     if( isset($_POST['account_first_name_english']) && ! empty($_POST['account_first_name_english']) )
@@ -373,6 +435,8 @@ function my_account_saving_extra_field( $user_id ) {
         update_user_meta( $user_id, 'billing_postcode', sanitize_text_field($_POST['billing_postcode']) );
         
 }
+
+
 
 
 // ADDING CUSTOM FIELD TO INDIVIDUAL USER SETTINGS PAGE IN BACKEND
@@ -418,55 +482,60 @@ function add_extra_fields( $user )
 
 function ur_theme_start_session()
 {
-    if (!session_id()){
-        session_start();
-    }
+
 }
 add_action("init", "ur_theme_start_session", 1);
 
 
 // add to url agent id on registration
 function add_agent_param(){
-
     $user_id = get_current_user_id();
     $current_meta_agent = get_user_meta($user_id, 'agent_name', true);
     $userdata = get_userdata( $user_id );
     $location = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-    //if register - user has agent meta
-    if(!empty($current_meta_agent)){
+
+
+    //if register
+    if ( is_user_logged_in()){
+        if(isset($_COOKIE['agent'])){
+             unset($_COOKIE['agent']);
+             setcookie('agent', '', time() - 3600,'/');
+        }
         if( !is_admin() && !isset($_GET['agent']) ){
-            if($userdata){
-                //some parameters are set
-                if(count($_GET)) {
-                    $location .= "&agent=$current_meta_agent";
-               }
-               else{
-                $location .= "?agent=$current_meta_agent";
-               }
-                
-                //$location = esc_url(add_query_arg('agent', $current_meta_agent));
+            //some parameters are set
+            if(count($_GET)) {
+                $location .= "&agent=$user_id";
             }
-            wp_redirect( $location );
+            else{
+            $location .= "?agent=$user_id";
+            }
+            //$location = esc_url(add_query_arg('agent', $current_meta_agent));
+            // setcookie('agent', $_GET['agent'],'','/');
+             wp_redirect( $location );
         }
     }
     // not register 
     else{
-        if(!isset($_COOKIE['agent']) && isset($_GET['agent']) ){
-            $agent= $_GET['agent'];
-            setcookie('agent', $_GET['agent']);
+        if(isset($_COOKIE['agent'])){
+            if(!$_GET['agent']){
+                //$location = esc_url(add_query_arg('agent', $_COOKIE['agent']));
+                //wp_redirect($location);
+            }
+            else{
+                $agent_cookie = $_COOKIE['agent'];
+                $agent_get =  $_GET['agent'];
+                if($agent_get != $agent_cookie){
+                    // empty value and expiration one hour before
+                    // unset($agent_cookie); 
+                    // setcookie('agent', '', time() - 3600);
+                    setcookie('agent', $agent_get,'','/');
+                }
+            }
         }
-        elseif(isset($_COOKIE['agent']) && (!$_GET['agent'])){
-            $location = esc_url(add_query_arg('agent', $_COOKIE['agent']));
-            wp_redirect($location);
-        }
-        elseif(isset($_COOKIE['agent']) && ($_GET['agent'])){
-            $agent_cookie = $_COOKIE['agent'];
-            $agent_get =  $_GET['agent'];
-            if($agent_get != $agent_cookie){
-                unset($agent_cookie);
-                // empty value and expiration one hour before
-                $res = setcookie($agent_cookie, '', time() - 3600);
-                setcookie('agent', $agent_get);
+        else{
+            if(isset($_GET['agent'])){
+                $agent= $_GET['agent'];
+                setcookie('agent', $_GET['agent'],'',"/");
             }
         }
           
@@ -475,6 +544,15 @@ function add_agent_param(){
 }
 
 add_action('template_redirect', 'add_agent_param'); 
+
+
+add_action( 'wp_login','wpdocs_ahir_redirect_after_logout' );
+add_action( 'wp_logout','wpdocs_ahir_redirect_after_logout' );
+function wpdocs_ahir_redirect_after_logout() {
+    wp_safe_redirect( home_url() );
+    exit();
+}
+
 
 //add CC field under price in product
 add_action( 'woocommerce_product_options_pricing', 'misha_adv_product_options');
@@ -587,5 +665,3 @@ function cc_value_after_price_loop( $price ) {
 }
 
 
-
- 
