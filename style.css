@@ -96,3 +96,18 @@ a {cursor:pointer;}
     padding: 0;
 }
  
+.register_before_checkout_wrapper > a{
+    border: 2px solid #111;
+    font-size: 21px;
+    padding: 5px 5px;
+    border-radius: 6px;
+    transition: all 200ms ease-in;
+    margin: 10px auto 20px;
+    max-width: 150px;
+
+    text-align: center;
+    display: block;
+}
+.register_before_checkout_wrapper > a:hover{
+    border-color: #FFC400!important;
+}

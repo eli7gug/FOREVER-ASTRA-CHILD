@@ -70,8 +70,11 @@ add_action( 'wp_ajax_nopriv_get_pdt_by_name', 'get_pdt_by_name' );
 
 function get_pdt_by_name() {
     if(isset($_POST['pdt_name']) && $_POST['pdt_name'] != '') {
-        $product_name = $_POST['pdt_name'];
+        //$product_name = $_POST['pdt_name'];
+        // for product with special character
+        $product_name = stripslashes($_POST['pdt_name']);
         $product = get_page_by_title( $product_name, OBJECT, 'product' );
+        //$product = get_page_by_path($product_name );
         $product_id = $product->ID;
         $request_url= strtok($_SERVER["HTTP_REFERER"], '?');
         $cart_url =  wc_get_cart_url();

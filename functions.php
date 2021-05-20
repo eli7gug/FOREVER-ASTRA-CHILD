@@ -471,9 +471,9 @@ function add_extra_fields( $user )
                 <th><label for="sponsor_contact"><?php _e("Sponsor Contact?", "astra-child"); ?> </label></th>
                 <td>						
                     <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_yes"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'yes' ); ?>  value="yes">
-                    <label for="signup_sponsor_contact_yes" class="">כן</label><br>
+                    <label for="signup_sponsor_contact_yes" class=""><?php _e("Yes", "woocommerce"); ?></label><br>
                     <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_no"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'no' ); ?> value="no">
-                    <label for="signup_sponsor_contact_no" class="">לא</label></td>
+                    <label for="signup_sponsor_contact_no" class=""><?php _e("No", "woocommerce"); ?></label></td>
             </tr>
         </table>
         <br />

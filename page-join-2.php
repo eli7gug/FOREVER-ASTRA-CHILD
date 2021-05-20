@@ -61,7 +61,7 @@ get_header(); ?>
 				<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">חזרה לחנות</a>
 			</div>
 			<div class="wc-proceed-to-checkout">
-				<!-- Change to dynamic link!!! --><a class="button go-to-account" href="http://localhost/forever/my-account/edit-account/">המשך</a>
+				<!-- Change to dynamic link!!! --><a class="button go-to-account" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>">המשך</a>
 			</div>
 		</div>
 		
