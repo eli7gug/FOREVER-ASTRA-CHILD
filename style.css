@@ -111,3 +111,11 @@ a {cursor:pointer;}
 .register_before_checkout_wrapper > a:hover{
     border-color: #FFC400!important;
 }
+
+#billing_tiles > a, #shipping_tiles > a{
+    text-decoration: underline;
+}
+
+form.woocommerce-shipping-calculator > a{
+
+}
