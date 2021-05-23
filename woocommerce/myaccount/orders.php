@@ -24,7 +24,8 @@ do_action( 'woocommerce_before_account_orders', $has_orders ); ?>
 <?php if ( $has_orders ) : ?>
 
 	<div class="dsh-account dsh-orders">
-	 <h1>היסטוריית הזמנות</h1>
+	<!-- היסטוריית הזמנות -->
+	 <h1><?php echo __( 'Order history', 'asta-child' );?></h1>
 	</div>
 	<table class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table">
 		<thead>

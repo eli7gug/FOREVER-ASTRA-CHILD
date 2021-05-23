@@ -268,25 +268,25 @@ function show_attributes() {
  add_action( 'init', 'my_account_new_endpoints' );
 
  function my_account_new_endpoints() {
- 	add_rewrite_endpoint( 'savedorders', EP_ROOT | EP_PAGES );
-	add_rewrite_endpoint( 'savedaddresses', EP_ROOT | EP_PAGES );
+ 	add_rewrite_endpoint( 'savedaddresses', EP_ROOT | EP_PAGES );
+	add_rewrite_endpoint( 'orders-by-agent', EP_ROOT | EP_PAGES );
  }
 
   /**
   * Get new endpoint content
   */
   // Saved Orders
- add_action( 'woocommerce_account_savedaddresses_endpoint', 'savedaddresses_endpoint_content' );
- function savedaddresses_endpoint_content() {
-     get_template_part('my-account-savedaddresses');
+ add_action( 'woocommerce_account_orders-by-agent_endpoint', 'orders_by_agent_endpoint_content' );
+ function orders_by_agent_endpoint_content() {
+     get_template_part('my-account-orders-by-agent');
  } 
  /**
   * Get new endpoint content
   */
-  // Saved Orders
- add_action( 'woocommerce_account_savedorders_endpoint', 'savedorders_endpoint_content' );
- function savedorders_endpoint_content() {
-     get_template_part('my-account-savedorders');
+  // Saved Address
+ add_action( 'woocommerce_account_savedaddresses_endpoint', 'savedaddresses_endpoint_content' );
+ function savedaddresses_endpoint_content() {
+     get_template_part('my-account-savedaddresses');
  }
 
  
@@ -305,10 +305,9 @@ function show_attributes() {
         'edit-account'    	=> __( 'Account details', 'woocommerce' ),
         'orders'             => __( 'Order history', 'asta-child' ),
         'saved-carts'        => __( 'Saved Carts', 'asta-child' ),
-		//'orders'             => __( 'היסטוריית הזמנות', 'woocommerce' ),
+        'orders-by-agent'        => __( 'Orders by current agent', 'asta-child' ),
         'edit-address'       => __( 'Addresses', 'woocommerce' ),
 		'savedaddresses'     => __( 'כתובות שמורות', 'woocommerce' ),
- 		//'savedorders'        => __( 'הזמנות שמורות', 'woocommerce' ),
  		'customer-logout'    => __( 'Logout', 'woocommerce' )
  	);
  	return $menuOrder;
