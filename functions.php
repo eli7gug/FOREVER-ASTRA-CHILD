@@ -649,8 +649,15 @@ function cc_value_after_price_loop( $price ) {
 
 add_action('woocommerce_checkout_create_order', 'before_checkout_create_order', 20, 2);
 function before_checkout_create_order( $order, $data ) {
-    if(isset($_COOKIE['agent'])){
-        $order->update_meta_data( 'agent_id', $_COOKIE['agent'] ); 
+    if(is_user_logged_in()){
+        $user_id = get_current_user_id();
+        $current_meta_agent = get_user_meta($user_id, 'agent_name', true);
+        $order->update_meta_data( 'agent_id', $current_meta_agent ); 
+    }
+    else{
+        if(isset($_COOKIE['agent'])){
+            $order->update_meta_data( 'agent_id', $_COOKIE['agent'] ); 
+        }
     }
 }
 /**
