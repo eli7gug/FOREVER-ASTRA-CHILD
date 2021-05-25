@@ -479,12 +479,15 @@ function add_extra_fields( $user )
     <?php
 }
 
-function ur_theme_start_session()
-{
 
+//remove agent cookie on logout
+add_action( 'wp_logout','remove_agent' );
+function remove_agent() {
+    if(isset($_COOKIE['agent'])){
+        unset($_COOKIE['agent']);
+        setcookie('agent', '', time() - 3600,'/');
+   }
 }
-add_action("init", "ur_theme_start_session", 1);
-
 
 // add to url agent id on registration
 function add_agent_param(){
@@ -500,6 +503,9 @@ function add_agent_param(){
              unset($_COOKIE['agent']);
              setcookie('agent', '', time() - 3600,'/');
         }
+        if($_GET['agent']){
+            setcookie('agent', $_GET['agent'],'','/');
+         }
         if( !is_admin() && !isset($_GET['agent']) ){
             //some parameters are set
             if(count($_GET)) {
@@ -622,33 +628,6 @@ function custom_woocommerce_empty_cart_action() {
 		//$referer  = wp_get_referer() ? esc_url( remove_query_arg( 'empty_cart' ) ) : wc_get_cart_url();
 		wp_safe_redirect(  wc_get_cart_url() );
 	}
-    // //search product by sku
-    // if(isset($_REQUEST['search-by-sku']) && $_REQUEST['search-by-sku'] != '') {
-    //     $sku= $_REQUEST['search-by-sku'];
-    //     global $wpdb;
-    //     $product_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s' LIMIT 1", $sku ) );
-    //     if ( $product_id ){
-    //         WC()->cart->add_to_cart( $product_id, 1 );
-    //         wp_safe_redirect( wc_get_cart_url() );
-    //     }
-    //     else{
-    //         $msg = "<p class='pdt_msg_error'>".__('This product sku does not exist','astra-child'). "</p>";
-    //     }
-    // }
-    // //search product by name
-    // if(isset($_REQUEST['search-by-name']) && $_REQUEST['search-by-name'] != '') {
-    //     $product_name= $_REQUEST['search-by-name'];
-    //     $product = get_page_by_title( $product_name, OBJECT, 'product' );
-    //     $product_id = $product->ID;
-    //     if ( $product_id ){
-    //         WC()->cart->add_to_cart( $product_id, 1 );
-    //         wp_safe_redirect( wc_get_cart_url() );
-    //     }
-    //     else{
-    //         $msg = "<p class='pdt_msg_error'>".__('This product name does not exist','astra-child'). "</p>";
-    //         echo $msg;
-    //     }
-    // }
 }
 
 // display cc value after price
@@ -662,5 +641,56 @@ function cc_value_after_price_loop( $price ) {
         return $price; 
     } 
 }
+
+
+/*
+* Add agent id in order meta
+*/
+
+add_action('woocommerce_checkout_create_order', 'before_checkout_create_order', 20, 2);
+function before_checkout_create_order( $order, $data ) {
+    if(isset($_COOKIE['agent'])){
+        $order->update_meta_data( 'agent_id', $_COOKIE['agent'] ); 
+    }
+}
+/**
+ * Display field value on the order edit page
+ */
+// add_action( 'woocommerce_admin_order_data_after_billing_address', 'my_custom_checkout_field_display_admin_order_meta', 10, 1 );
+
+// function my_custom_checkout_field_display_admin_order_meta($order){
+//     echo '<p><strong>'.__('Agent ID').':</strong>' . $_COOKIE['agent'] . '</p>';
+// }
+
+/*
+* Add a WooCommerce Orders List Agent Id Column
+*/
+
+
+function wc_new_order_column( $columns ) {
+    $columns['sponsor'] = __('Sponsor', 'astra-child');
+    return $columns;
+}
+add_filter( 'manage_edit-shop_order_columns', 'wc_new_order_column' );
+
+add_action( 'manage_shop_order_posts_custom_column', 'add_wc_order_admin_list_column_content' );
+ 
+function add_wc_order_admin_list_column_content( $column ) {
+   
+    global $post;
+ 
+    if ( 'sponsor' === $column ) {
+ 
+        $order = wc_get_order( $post->ID );
+        $order_data = $order->get_meta('agent_id');
+        echo $order_data;
+      
+    }
+}
+
+
+
+
+
 
 
