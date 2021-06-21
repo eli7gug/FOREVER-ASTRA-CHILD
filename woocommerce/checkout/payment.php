@@ -47,17 +47,11 @@ if ( ! is_ajax() ) {
 		<?php wc_get_template( 'checkout/terms.php' ); ?>
 		<!-- allow register forover for not login user -->
 		<div class="register_before_checkout_wrapper">
-		<?php if ( ! is_user_logged_in()){
-			$total_cc = get_total_CC();?>
-			
-			<?php if($total_cc >= 2):?>
+			<?php if ( ! is_user_logged_in()){
+				$total_cc = get_total_CC();?>
 				<p><?php _e("In order to receive a benefit, you must join forever family", "astra-child"); ?></p>
 				<a  class="go-to-account" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>" title="<?php _e('Register','woocommerce'); ?>"><?php _e('Join Us now!','astra-child'); ?></a>
-			<?php else:?>
-				<p><?php _e("In order to receive a benefit, you must join forever family", "astra-child"); ?></p>
-				<a  class="go-to-account" href="<?php echo get_bloginfo('url').'/join-step-1' ?>" title="<?php _e('Register','woocommerce'); ?>"><?php _e('Join Us now!','astra-child'); ?></a>
-			<?php endif;
-		}?>
+			<?php }?>
 		</div>
 
 		<?php do_action( 'woocommerce_review_order_before_submit' ); ?>

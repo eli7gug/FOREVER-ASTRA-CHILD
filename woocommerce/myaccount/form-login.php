@@ -138,13 +138,13 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 						<p class="form-row form-row-first address-field validate-required" id="signup_city_field">
 							<label for="billing_city" class=""><?php _e( 'City', 'woocommerce' ); ?><abbr class="required" title="נדרש">*</abbr></label>
 							<span class="woocommerce-input-wrapper">
-								<input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="<?php echo ( ! empty( $_POST['billing_city'] ) ) ? esc_attr( wp_unslash( $_POST['billing_city'] ) ) : ''; ?>">
+								<input type="text" class="input-text autocomplete-google" name="billing_city" id="billing_city" autocomplete="off" placeholder="" value="<?php echo ( ! empty( $_POST['billing_city'] ) ) ? esc_attr( wp_unslash( $_POST['billing_city'] ) ) : ''; ?>">
 							</span>
 						</p>
 						<p class="form-row form-row-last address-field validate-required" id="signup_street_field">
 						<label for="billing_address_1" class=""><?php _e( 'Street address', 'woocommerce' ); ?>&nbsp;<abbr class="required" title="נדרש">*</abbr></label>
 						<span class="woocommerce-input-wrapper">
-							<input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="" value="<?php echo ( ! empty( $_POST['billing_address_1'] ) ) ? esc_attr( wp_unslash( $_POST['billing_address_1'] ) ) : ''; ?>">
+							<input type="text" class="input-text autocomplete-google" name="billing_address_1" id="billing_address_1" placeholder="" value="<?php echo ( ! empty( $_POST['billing_address_1'] ) ) ? esc_attr( wp_unslash( $_POST['billing_address_1'] ) ) : ''; ?>">
 						</span>
 						</p>
 						<p class="form-row form-row-first address-field validate-required" id="billing_address_2">
@@ -185,44 +185,90 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 					}
 								 
 					else {?>
-					<p class="form-row form-row-wide sponsor-field sponsor-search-field">
-						<label for="signup_sponsor_find" class=""><?php echo __('Search Sponsor by name/ email/ number','astra-child')?><span class="info">?</span></label>
-					</p>
-					<?php 
-					?>
-					<p class="form-row form-row-wide sponsor-field" id="signup_sponsor_search_number_field">
-						<select name="agent_name" class="agent_name" id="agent_name">
-						<option value="0" selected ><?php echo __('Search Sponsor','astra-child')?></option>
-							<?php 
-							foreach ($users as $user) {
-								$user_info = get_userdata($user->ID);
-								$meta_number = get_user_meta($user->ID, 'priority_customer_number')[0];
-								$meta_name = get_user_meta($user->ID, 'first_name')[0].' '.get_user_meta($user->ID, 'last_name')[0];
-								$meta_email = $user_info->user_email;
-								$checked = ($current_meta_agent == $user->ID) ? 'selected="selected"' : '';
-								$user_id = $user->ID;
-								?>
-								<option data-num="<?php echo strtolower($meta_number) ?>" data-email="<?php echo $meta_email ?>" value="<?php echo $user_id ?>" <?php echo $checked ?>>
-									<?php echo $meta_name;  ?>
-								</option>
-							<?php } ?>
-						</select>
-					</p>
-					<?php }?>
+                        <p class="form-row form-row-wide sponsor-field sponsor-search-field">
+                            <input type="radio" class="input-radio" name="sponsor_find" id="signup_sponsor_find" value="sponsor_name">
+                            <label for="signup_sponsor_find" class="label-tooltip">
+                                <?php echo __('Search Sponsor by name/ email/ number','astra-child')?>
+                                <span class="info tooltip">?
+                                    <span class="tooltiptext">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף.</span>
+                                </span>
+                            </label>
+                            <select name="agent_name" disabled class="agent_name" id="agent_name" placeholder="<?php echo __('Search Sponsor','astra-child')?>">
+                                <option value="0" selected ><?php echo __('Search Sponsor','astra-child')?></option>
+                                <?php 
+                                foreach ($users as $user) {
+                                    $user_info = get_userdata($user->ID);
+                                    $meta_number = get_user_meta($user->ID, 'priority_customer_number')[0];
+                                    $meta_name = get_user_meta($user->ID, 'first_name')[0].' '.get_user_meta($user->ID, 'last_name')[0];
+                                    $meta_email = $user_info->user_email;
+                                    $checked = ($current_meta_agent == $user->ID) ? 'selected="selected"' : '';
+                                    $user_id = $user->ID;
+                                    ?>
+                                    <option data-num="<?php echo strtolower($meta_number) ?>" data-email="<?php echo $meta_email ?>" value="<?php echo $user_id ?>" <?php echo $checked ?>>
+                                        <?php echo $meta_name;  ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <div class="clear"></div>
+                            <br>
+                            <input type="radio" class="input-radio" name="sponsor_find" id="sponsor_city" value="sponsor_city">
+                            <label for="sponsor_city" class="label-tooltip">
+                                <?php echo __('I do not have a sponsor yet. Find a sponsor for me','astra-child')?>
+                                <!-- אין לי חונך עדיין. מצא חונך עבורי -->
+                                <span class="info tooltip">?
+                                    <span class="tooltiptext">לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף.</span>
+                                </span>
+                            </label>
+                            <input type="text" disabled class="input-text autocomplete-google" name="sponsor_by_city" id="sponsor_by_city" autocomplete="off" placeholder="<?php echo __('City or locality of residence','astra-child')?>" value="<?php echo ( ! empty( $_POST['sponsor_city'] ) ) ? esc_attr( wp_unslash( $_POST['sponsor_city'] ) ) : ''; ?>">
+                        </p>
+                        <?php }?>
 				</div>
-				<div class="join-form-sponsor-contact woocommerce-signup-fields">
-					<h3><?php echo __('Contact with the agent','astra-child')?></h3>
+				<?php if(false):?>
+					<div class="join-form-sponsor-contact woocommerce-signup-fields">
+						<h3><?php echo __('Contact with the agent','astra-child')?></h3>
+						<div class="woocommerce-signup-fields__field-wrapper">
+							<p><?php echo __('I want my agent to contact me','astra-child')?></p>
+							<p>
+								<span class="woocommerce-input-wrapper">
+									<input type="radio" class="input-radio" name="sponsor_contact"  <?php  checked( get_user_meta( get_current_user_id(), 'sponsor_contact', true ), 'yes' ); ?> value="yes">כן<br>
+									<input type="radio" class="input-radio" name="sponsor_contact"  <?php  checked( get_user_meta( get_current_user_id(), 'sponsor_contact', true ), 'no' ); ?> value="no">לא
+								</span>
+							</p>
+						</div>	
+					</div>
+				<?php endif;?>
+				<div class="agreements_wrap woocommerce-signup-fields">
+					<h3><?php echo __('Agreements','astra-child')?></h3>
 					<div class="woocommerce-signup-fields__field-wrapper">
-						<p><?php echo __('I want my agent to contact me','astra-child')?></p>
 						<p>
 							<span class="woocommerce-input-wrapper">
-								<input type="radio" class="input-radio" name="sponsor_contact"  <?php  checked( get_user_meta( get_current_user_id(), 'sponsor_contact', true ), 'yes' ); ?> value="yes">כן<br>
-								<input type="radio" class="input-radio" name="sponsor_contact"  <?php  checked( get_user_meta( get_current_user_id(), 'sponsor_contact', true ), 'no' ); ?> value="no">לא
+								<input id="agree_business_owner" type="checkbox" name="agree_business_owner"   <?php  checked( get_user_meta( $user->ID, 'agree_business_owner', true ), 'on' ); ?> >	
+								<label for="agree_business_owner">
+								<?php echo __('I agree to join as a business owner in Forever','astra-child')?>
+								<!-- אני מסכימ/ה להצטרף כבעלת עסק ב-Forever -->
+								</label>
+							</span>
+						</p>
+						<p>
+							<span class="woocommerce-input-wrapper">
+								<input id="agree_terms" type="checkbox" name="agree_terms"   <?php  checked( get_user_meta( $user->ID, 'agree_terms', true ), 'on' ); ?> >	
+								<label for="agree_terms">
+								<?php echo __('I read and I agree with the company\'s procedures','astra-child')?>
+								<!-- >קראתי ואני מסכימ/ה לנהלי החברה -->
+								</label>
+							</span>
+						</p>
+						<p>
+							<span class="woocommerce-input-wrapper">
+								<input id="agree_privacy" type="checkbox" name="agree_privacy"   <?php  checked( get_user_meta( $user->ID, 'agree_privacy', true ), 'on' ); ?> >	
+								<label for="agree_privacy">
+								<?php echo __('I agree to the terms of privacy','astra-child')?>
+								<!-- >אני מסכימ/ה לתנאי הפרטיות -->
+								</label>
 							</span>
 						</p>
 					</div>	
 				</div>
-
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_password' ) ) : ?>
 

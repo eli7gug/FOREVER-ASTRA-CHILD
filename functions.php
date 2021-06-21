@@ -22,12 +22,24 @@ function child_enqueue_styles() {
 	wp_enqueue_style( 'astra-child-theme-css', get_stylesheet_directory_uri() . '/style.css', array('astra-theme-css'), ASTRA_CHILD_THEME_VERSION, 'all' );
     wp_enqueue_style( 'select2', get_stylesheet_directory_uri().'/css/select2.css' );
 	wp_enqueue_script( 'select2', get_stylesheet_directory_uri() . '/js/select2.min.js', array( 'jquery' ) );
+    wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC_ORCeyeyZLwdOAtUTldORNlArbT5-MbM');
     wp_register_script('custom-js',get_stylesheet_directory_uri().'/js/custom.js', ['jquery'],time());
     wp_enqueue_script( 'custom-js' );
 }
 
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
 add_theme_support('woocommerce');
+
+function astra_child_setup() {
+    load_child_theme_textdomain( 'astra-child', get_stylesheet_directory().'/languages' );
+}
+add_action( 'after_setup_theme', 'astra_child_setup' );
+
+function wcssc_plugins_loaded() {
+    load_plugin_textdomain( 'wcssc', false, dirname( plugin_basename( __FILE__ ) ) . 'languages/' );
+}
+add_action( 'plugins_loaded', 'wcssc_plugins_loaded', 0 );
+
 
 if (!session_id()){
     session_start();
@@ -422,8 +434,37 @@ function my_account_saving_extra_field( $user_id ) {
         update_user_meta( $user_id, 'account_id', sanitize_text_field($_POST['account_id']) );
     if( isset($_POST['agent_name']))
         update_user_meta( $user_id, 'agent_name', $_POST['agent_name'] );
-    if( isset($_POST['sponsor_contact']) )
-        update_user_meta( $user_id, 'sponsor_contact', $_POST['sponsor_contact'] );
+    else if(isset($_POST['sponsor_by_city'])){
+        $sponsor_city = $_POST['sponsor_by_city'];
+        $user_by_city_array = array();
+        $users = get_users(); 
+        foreach ($users as $user) {
+            $user_info = get_userdata($user->ID);
+            $meta_city = get_user_meta($user->ID, 'billing_city')[0];
+            // if($meta_city == $sponsor_city){
+            if (strpos(strtolower($sponsor_city), $meta_city) !== false) {
+                $user_by_city_array[] = $user->ID;
+            }
+        }
+        $city_key = array_rand($user_by_city_array);
+        $city_value = $user_by_city_array[$city_key];
+        update_user_meta( $user_id, 'agent_name', $city_value );
+    }
+    // if( isset($_POST['sponsor_contact']) )
+    //     update_user_meta( $user_id, 'sponsor_contact', $_POST['sponsor_contact'] );
+    if( isset($_POST['agree_business_owner']) )
+        update_user_meta( $user_id, 'agree_business_owner', $_POST['agree_business_owner'] );
+    else{
+        update_user_meta( $user_id, 'agree_business_owner', 'off' );
+    }
+    if( isset($_POST['agree_terms']) )
+        update_user_meta( $user_id, 'agree_terms', $_POST['agree_terms'] );
+    else
+        update_user_meta( $user_id, 'agree_terms', 'off' );
+    if( isset($_POST['agree_privacy']) )
+        update_user_meta( $user_id, 'agree_privacy', $_POST['agree_privacy'] );
+    else
+        update_user_meta( $user_id, 'agree_privacy', 'off' );
     if( isset($_POST['billing_city']) && ! empty($_POST['billing_city']) )
         update_user_meta( $user_id, 'billing_city', sanitize_text_field($_POST['billing_city']) );
     if( isset($_POST['billing_address_1']) && ! empty($_POST['billing_address_1']) )
@@ -466,13 +507,33 @@ function add_extra_fields( $user )
                 <th><label for="agent_name"><?php _e("Agent ID", "astra-child"); ?> </label></th>
                 <td><input type="text" readonly  name="agent_name" value="<?php echo esc_attr(get_user_meta( $user->ID, 'agent_name', true )); ?>" class="regular-text" /></td>
             </tr>
+            <?php if(false):?>
+                <tr>
+                    <th><label for="sponsor_contact"><?php _e("Sponsor Contact?", "astra-child"); ?> </label></th>
+                    <td>						
+                        <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_yes"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'yes' ); ?>  value="yes">
+                        <label for="signup_sponsor_contact_yes" class=""><?php _e("Yes", "woocommerce"); ?></label><br>
+                        <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_no"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'no' ); ?> value="no">
+                        <label for="signup_sponsor_contact_no" class=""><?php _e("No", "woocommerce"); ?></label></td>
+                </tr>
+            <?php endif;?>
             <tr>
-                <th><label for="sponsor_contact"><?php _e("Sponsor Contact?", "astra-child"); ?> </label></th>
-                <td>						
-                    <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_yes"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'yes' ); ?>  value="yes">
-                    <label for="signup_sponsor_contact_yes" class=""><?php _e("Yes", "woocommerce"); ?></label><br>
-                    <input type="radio" class="input-radio" name="sponsor_contact" id="signup_sponsor_contact_no"  <?php  checked( get_user_meta( $user->ID, 'sponsor_contact', true ), 'no' ); ?> value="no">
-                    <label for="signup_sponsor_contact_no" class=""><?php _e("No", "woocommerce"); ?></label></td>
+                <th><label for="agree_business_owner"><?php echo __('I agree to join as a business owner in Forever','astra-child')?></label></th>
+                <td> 
+                    <input type="checkbox" name="agree_business_owner"   <?php  checked( get_user_meta( $user->ID, 'agree_business_owner', true ), 'on' ); ?> value="on" />
+                </td>   
+            </tr>
+            <tr>
+                <th><label for="agree_terms"><?php echo __('I read and I agree with the company\'s procedures','astra-child')?></label></th>
+                <td> 
+                    <input type="checkbox" name="agree_terms"   <?php  checked( get_user_meta( $user->ID, 'agree_terms', true ), 'on' ); ?> value="on" />
+                </td>   
+            </tr>
+            <tr>
+                <th><label for="agree_privacy"><?php echo __('I agree to the terms of privacy','astra-child')?></label></th>
+                <td> 
+                    <input type="checkbox" name="agree_privacy"   <?php  checked( get_user_meta( $user->ID, 'agree_privacy', true ), 'on' ); ?> value="on" />
+                </td>   
             </tr>
         </table>
         <br />
@@ -490,6 +551,7 @@ function remove_agent() {
 }
 
 // add to url agent id on registration
+add_action('template_redirect', 'add_agent_param'); 
 function add_agent_param(){
     $user_id = get_current_user_id();
     $current_meta_agent = get_user_meta($user_id, 'agent_name', true);
@@ -548,9 +610,9 @@ function add_agent_param(){
 
 }
 
-add_action('template_redirect', 'add_agent_param'); 
 
 
+// redirect to home page after login/logout
 add_action( 'wp_login','wpdocs_ahir_redirect_after_logout' );
 add_action( 'wp_logout','wpdocs_ahir_redirect_after_logout' );
 function wpdocs_ahir_redirect_after_logout() {
@@ -669,10 +731,10 @@ function before_checkout_create_order( $order, $data ) {
 //     echo '<p><strong>'.__('Agent ID').':</strong>' . $_COOKIE['agent'] . '</p>';
 // }
 
+
 /*
 * Add a WooCommerce Orders List Agent Id Column
 */
-
 
 function wc_new_order_column( $columns ) {
     $columns['sponsor'] = __('Sponsor', 'astra-child');
@@ -695,9 +757,224 @@ function add_wc_order_admin_list_column_content( $column ) {
     }
 }
 
+/**
+ * Prevent update notification for plugin: woo-save-and-share-cart because we edit the file:
+ * woo-save-and-share-cart\Includes\API\Endpoints\GetLink.php: add agent to link : line 53		
+ */
+
+function disable_plugin_updates( $value ) {
+    if ( isset($value) && is_object($value) ) {
+      if ( isset( $value->response['woo-save-and-share-cart/woo-save-and-share-cart.php'] ) ) {
+        unset( $value->response['woo-save-and-share-cart/woo-save-and-share-cart.php'] );
+      }
+    }
+    return $value;
+  }
+  add_filter( 'site_transient_update_plugins', 'disable_plugin_updates' );
+
+/*
+*  Add sponsor name in header
+*/
+
+
+add_shortcode('extra_header','add_sponsor_header');
+
+function add_sponsor_header(){
+    if ( !is_user_logged_in()){
+        if(isset($_COOKIE['agent'])){
+            $current_meta_agent_num = get_user_meta($_COOKIE['agent'], 'priority_customer_number')[0];
+            $current_meta_agent_name = get_user_meta($_COOKIE['agent'], 'first_name')[0].' '.get_user_meta($_COOKIE['agent'], 'last_name')[0] ;
+        }
+    ?>
+    	<dl class="extra_header">
+            <span class="sponsor_num_wrapper">
+                <dt><?php echo __('Shop:', 'astra-child');?></dt>
+                <dd>
+                    <?php echo $current_meta_agent_num ?>
+                    <span><?php echo __('(Marketer number)', 'astra-child');?></span>
+                </dd>
+            </span>
+		</dl>
+       
+    <?php }
+} 
+
+/*
+*  Remove First Step Category from Woo Cat menu
+*/
+add_filter( 'woocommerce_product_categories_widget_args', 'woo_product_cat_widget_args' );
+function woo_product_cat_widget_args( $cat_args ) {
+
+                $cat_args['exclude'] = array('107');
+
+                return $cat_args;
+}
+
+add_filter( 'widget_text', 'do_shortcode' );
+
+add_shortcode('logout_link','logout_link_header');
+
+
+function logout_link_header(){?>
+
+        <a class="logoutBtn" href="<?php echo wp_logout_url(get_permalink()); ?>"><?php echo __('logout', 'woocommerce');?></a>
+<?php }
+
+
+
+/*Navigation Menus*/
+function register_my_menu() {
+    register_nav_menu('account-menu',__( 'Account Menu' ));
+  }
+  add_action( 'init', 'register_my_menu' );
+  /*End*/
+
+
+  /*Creating shortcode for menu*/
+function list_menu($atts, $content = null) {
+    extract(shortcode_atts(array(  
+        'menu'            => '', 
+        'container'       => '', 
+        'container_class' => '', 
+        'container_id'    => '', 
+        'menu_class'      => '', 
+        'menu_id'         => '',
+        'echo'            => true,
+        'fallback_cb'     => 'wp_page_menu',
+        'before'          => '',
+        'after'           => '',
+        'link_before'     => '',
+        'link_after'      => '',
+        'depth'           => 0,
+        'walker'          => '',
+        'theme_location'  => ''), 
+        $atts));
+  
+    return wp_nav_menu( array( 
+        'menu'            => $menu, 
+        'container'       => $container, 
+        'container_class' => $container_class, 
+        'container_id'    => $container_id, 
+        'menu_class'      => $menu_class, 
+        'menu_id'         => $menu_id,
+        'echo'            => false,
+        'fallback_cb'     => $fallback_cb,
+        'before'          => $before,
+        'after'           => $after,
+        'link_before'     => $link_before,
+        'link_after'      => $link_after,
+        'depth'           => $depth,
+        'walker'          => $walker,
+        'theme_location'  => $theme_location));
+}
+add_shortcode("listmenu", "list_menu");
+
+add_filter( 'widget_text', 'do_shortcode' );
+
+// if not login- customer has to choose agent before payment
+//save agent to order id custom field
+if ( ! is_user_logged_in()){
+    // save fields to order meta
+    add_action( 'woocommerce_checkout_update_order_meta', 'save_agent_checkout' );
+    // save field values
+    function save_agent_checkout( $order_id ){
+        $order = wc_get_order($order_id);
+        if( isset( $_POST['agent_name'] ) ){
+            update_post_meta( $order_id, 'agent_id',  $_POST['agent_name']  );
+        } 
+        elseif( isset( $_POST['sponsor_by_city'] ) ){
+            $sponsor_city = sanitize_text_field(strtolower($_POST['sponsor_by_city']));
+            $user_by_city_array = array();
+            $users = get_users(); 
+            foreach ($users as $user) {
+                $user_info = get_userdata($user->ID);
+                $meta_city = get_user_meta($user->ID, 'billing_city')[0];
+                //if($meta_city == $sponsor_city){
+                if (strpos(strtolower($sponsor_city), $meta_city) !== false) {
+                    $user_by_city_array[] = $user->ID;
+                }
+            }
+            $city_key = array_rand($user_by_city_array);
+            $city_value = $user_by_city_array[$city_key];
+            update_post_meta( $order_id, 'agent_id', $city_value );
+        }
+              
+    }
+
+    
+    add_action('woocommerce_checkout_process', 'validate_agent_checkout');
+
+    function validate_agent_checkout() {
+
+        // you can add any custom validations here
+        if ( empty( $_POST['agent_name'] ) &&  empty( $_POST['sponsor_by_city'] ) )
+            wc_add_notice( 'Please select a sponsor', 'error' );
+        
+    }
+}
+
+
+function SendSMS($message_text,$recepients) {
+    $sms_user = "flpil21"; // User Name (Provided by Inforu)
+    $sms_apitoken = "t0d6xr6ak16q9neyvdm5sadpy"; // Password (Provided by Inforu)
+    $sms_sender = "FOREVER"; //
+    $message_text = preg_replace( "/\r|\n/", "", $message_text); // remove line breaks
+    $xml = '';
+    $xml .= '<Inforu>'.PHP_EOL;
+    $xml .= ' <User>'.PHP_EOL;
+    $xml .= ' <Username>'.htmlspecialchars($sms_user).'</Username>'.PHP_EOL;
+    $xml .= ' <ApiToken>'.htmlspecialchars($sms_apitoken).'</ApiToken>'.PHP_EOL;
+    $xml .= ' </User>'.PHP_EOL;
+    $xml .= ' <Content Type="sms">'.PHP_EOL;
+    $xml .= ' <Message>'.htmlspecialchars($message_text).'</Message>'.PHP_EOL;
+    $xml .= ' </Content>'.PHP_EOL;
+    $xml .= ' <Recipients>'.PHP_EOL;
+    $xml .= ' <PhoneNumber>'.htmlspecialchars($recepients).'</PhoneNumber>'.PHP_EOL;
+    $xml .= ' </Recipients>'.PHP_EOL;
+    $xml .= ' <Settings>'.PHP_EOL;
+    $xml .= ' <Sender>'.htmlspecialchars($sms_sender).'</Sender>'.PHP_EOL;
+    $xml .= ' </Settings>'.PHP_EOL;
+    $xml .= '</Inforu>';
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,'https://api.inforu.co.il/SendMessageXml.ashx');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'InforuXML='.urlencode($xml) );
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    //print_r($response);
+    return $response;
+}
+
+//Only show products in the front-end search results
+function lw_search_filter_pages($query) {
+    if ($query->is_search) {
+    $query->set('post_type', 'product');
+    $query->set( 'wc_query', 'product_query' );
+    }
+    return $query;
+    }
+     
+add_filter('pre_get_posts','lw_search_filter_pages');
+
+add_filter( 'woocommerce_checkout_fields', 'change_order_address' );
+
+function change_order_address( $checkout_fields ) {
+	$checkout_fields['billing']['billing_city']['priority'] = 50;
+    $checkout_fields['billing']['billing_address_1']['priority'] = 70;
+    $checkout_fields['billing']['billing_postcode']['priority'] = 90;
+	return $checkout_fields;
+}
 
 
 
 
 
+
+
+
+
+
+
+    
 

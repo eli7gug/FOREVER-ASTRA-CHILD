@@ -73,8 +73,7 @@ $current_meta_agent_num = get_user_meta($current_meta_agent, 'priority_customer_
 	</h3>
 	<div class="dsh-box">
 	  <p>
-	  <span><?php echo $meta_address1 ?><br>
-	  <span><?php echo $meta_address2 ?><br>
+	  <span><?php echo $meta_address1.' '.$meta_address2  ?><br>
 	  <span><?php echo $meta_city ?></span><br>
 	  <span><?php echo $meta_postcode ?></span>
 	  </p>

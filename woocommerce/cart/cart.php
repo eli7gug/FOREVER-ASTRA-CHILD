@@ -103,10 +103,10 @@ do_action( 'woocommerce_before_cart' ); ?>
 						</td>
 						<td class="product-cc" data-title="<?php esc_attr_e( 'CC value', 'woocommerce' ); ?>">
 							<?php
-							echo apply_filters( 'woocommerce_checkout_cart_item_quantity', ' <strong class="product-quantity">' . sprintf( '%s&nbsp;&times;', $cart_item['quantity'] ) . '</strong>', $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 								$cc_val_unit     = $_product->get_meta( 'cc_value', true );
-								echo $cc_val_unit.'<span class="cc-font"> CC</span>';
-								
+                                $qtty = $cart_item['quantity'];
+                                $total_item_cc = $cc_val_unit * $qtty;
+								echo '<strong>'.$total_item_cc.'</strong><span class="cc-font"> CC</span>';	
 							?>
 						</td>
 						<td class="product-quantity" data-title="<?php esc_attr_e( 'Quantity', 'woocommerce' ); ?>">

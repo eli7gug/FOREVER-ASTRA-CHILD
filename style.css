@@ -24,8 +24,48 @@ Template: astra
 #wcssc-button-container  button.button{
     margin-bottom: 20px;
 }
-
-
+.wcssc-icons-container a{
+    line-height: 17px;
+}
+.wcssc-icons-container a > div{
+    font-size: 15px;
+}
+.modal-header .title_wrap{
+    margin-right: 10px;
+}
+.modal-header .title_wrap > h5{
+    line-height: 20px;
+}
+#saved-cart-description{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#saved-cart-description > p,#saved-cart-description > h5{
+    display: block;
+    width: 100%;
+}
+#saved-cart-description > h5 > a{
+    margin-left:10px;
+}
+#saved-cart-description .addtoany_content{
+    margin: 0;
+}
+#saved-cart-description .share_wrap{
+    display: flex;
+    align-items: center;
+}
+#saved-cart-description .share_wrap > span{
+    padding-right: 5px;
+}
+.button.approval_bag_btn{
+    background-color: #F8C005;
+    border-radius: 10px;
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px 20px;
+}
 
 /* register tab */
 
@@ -89,13 +129,14 @@ a {cursor:pointer;}
 .woocommerce form.register{
     border: 0;
 }
+ 
 .hide_input{
     visibility: hidden;
     height: 0;
     margin: 0;
     padding: 0;
 }
- 
+
 .register_before_checkout_wrapper > a{
     border: 2px solid #111;
     font-size: 21px;
@@ -117,5 +158,55 @@ a {cursor:pointer;}
 }
 
 form.woocommerce-shipping-calculator > a{
+
+}
+dl.extra_header{
+    height: 20px;
+}
+dl.extra_header dd{
+    margin: 0;
+}
+dl.extra_header dt{
+    padding-left:4px;
+}
+dl.extra_header .sponsor_num_wrapper{
+    cursor: pointer;
+}
+dl.extra_header > span{
+    display: flex;
+}
+.site-header-above-section-left{
+    display: inline-flex;
+    align-items: baseline;
+}
+.btn-continue.address-wrapper > a.th-btn.button{
+    background-color: transparent;
+    padding: 0;
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 15px;
+}
+.add-address .btn-add-address.primary.button{
+    display: none;
+} 
+form #submit-shipping{
+    padding: 10px 20px;
+    margin: auto;
+    display: block;
+}
+
+@media screen and (max-width: 767px) {
+    dl.extra_header > span{
+       font-size: 12px;
+    }
+    dl.extra_header dd > span{
+        display: none;
+    }
+}
+@media screen and (max-width: 374px) {
+    .site-header-above-section-left.site-header-section-left{
+        flex-wrap: wrap;
+        margin-top:10px;
+    }
 
 }
