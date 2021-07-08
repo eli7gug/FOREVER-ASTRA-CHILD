@@ -124,6 +124,7 @@ a {cursor:pointer;}
 .woocommerce  .tab-reg, .woocommerce-page .tab-reg{
     float: none!important;
     margin: auto;
+    width: auto!important;
 }
 
 .woocommerce form.register{
@@ -179,6 +180,7 @@ dl.extra_header > span{
     display: inline-flex;
     align-items: baseline;
 }
+
 .btn-continue.address-wrapper > a.th-btn.button{
     background-color: transparent;
     padding: 0;
@@ -194,7 +196,105 @@ form #submit-shipping{
     margin: auto;
     display: block;
 }
+.download_file_wrapper{
+    float: left;
+}
+.download_file_wrapper > a{
+    background-color: #F8C005;
+    border-radius: 10px;
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+.select_agent_wrap, .select_city_wrapper{
+    display: none;
+    margin:20px 0;
+}
+.woocommerce-page .select_agent_wrap .select2-container{
+    width: 47%!important;
+}
+.step-3-form form .woocommerce-signup-fields .form-row.sponsor-field.sponsor-search-field{
+    float: none!important;
+    display: block;
+}
+.woocommerce-page .select_agent_wrap .select2-container .select2-selection--single{
+    height: 35px;
+    margin-left: 5px;
+    padding: 5px;
+}
 
+input#signup_sponsor_find,input#signup_sponsor_find + label, input#sponsor_city, input#sponsor_city + label{
+    cursor: pointer;
+}
+.quick-order-right .cart-search{
+    overflow: visible;
+    display: flex;
+}
+.quick-order-right .cart-search .select2-container{
+    margin-left: 15px;
+}
+.quick-order-right .cart-search .select2-container .select2-selection--single{
+    padding: 4px;
+}
+.cart-search select{
+    margin-left:15px;
+    padding: 4px;
+    background-color: #fff!important;
+    font-size: 16px;
+}
+.select_city_wrapper input.sponsor_by_city{
+    width: 47%!important;
+}
+.sponsor_details_wrapper{
+    border: 1px solid #ccc;
+    padding: 12px;
+    display: none;
+    margin-top: 20px;
+}
+.sponsor_details_default{
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-top: 20px;
+}
+.sponsor_details_wrapper > *, .sponsor_details_default > *{
+    margin-bottom: 0!important;
+}
+.sponsor_details_wrapper .sponsor_detail_num, .sponsor_details_default .sponsor_detail_num{
+    font-weight: bold;
+}
+.sponsor_msg_error{
+    color: red!important;
+}
+.join-form-sponsor .sponsor-search-field label{
+    display: inline-block!important;
+    font-weight: 400!important;
+    padding-right: 5px!important;
+    font-size: 16px!important;
+}
+.join-form-sponsor > h3{
+    margin-bottom: 0;
+}
+button.find_by_name:disabled{
+    opacity: 0.5;
+}
+button.find_by_name,button.find_by_city{
+    position: relative;
+}
+.find_by_name.loading:after, .find_by_city.loading:after{
+    font-family: WooCommerce;
+    content: '\e01c';
+    vertical-align: top;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+    position: absolute;
+    top: auto;
+    left: 1em;
+    animation: spin 2s linear infinite;
+}
+#wcssc-button-container button.button{
+    z-index:99;
+}
 @media screen and (max-width: 767px) {
     dl.extra_header > span{
        font-size: 12px;
@@ -202,6 +302,15 @@ form #submit-shipping{
     dl.extra_header dd > span{
         display: none;
     }
+    .woocommerce-page .select_agent_wrap .select2-container{
+        width: 100%!important;
+        margin-bottom: 20px;
+    }
+    .select_city_wrapper input.sponsor_by_city{
+        width: 100%!important;
+        margin-bottom: 20px;
+    }
+
 }
 @media screen and (max-width: 374px) {
     .site-header-above-section-left.site-header-section-left{

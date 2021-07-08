@@ -20,14 +20,21 @@ get_header(); ?>
 
 		<?php astra_content_page_loop(); ?>
 		
-		<p class="success-email-message">מייל מידע נשלח למייל <span>email@yourdomain.com</span></p>
-		
+		<p class="success-email-message">
+			<?php echo __('Email Information sent to email', 'astra-child')?> 
+			<span>
+				<?php 
+					$current_user = wp_get_current_user();
+					echo $current_user->user_email;
+				?>
+			</span>
+		</p>
 		<div class="cart-page-buttons">
 			<div class="wc-proceed-to-checkout">
-				<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">חזרה לחנות</a>
+				<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>"><?php echo __('Back to shop', 'astra-child')?></a>
 			</div>
 			<div class="wc-proceed-to-checkout">
-				<a class="button go-to-account" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>">לחשבון שלי</a>
+				<a class="button go-to-account" href="<?php echo get_permalink( get_option('woocommerce_myaccount_page_id') ); ?>"><?php echo __('To my account', 'astra-child')?> </a>
 			</div>
 		</div>
 		

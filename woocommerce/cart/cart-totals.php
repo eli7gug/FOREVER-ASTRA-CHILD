@@ -110,9 +110,13 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wc-proceed-to-checkout">
 		<a class="button back-to-shop" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">חזרה לחנות</a>
 	</div>
-	<div class="wc-proceed-to-checkout">
-		<?php do_action( 'woocommerce_proceed_to_checkout' ); ?>
-	</div>
+	<?php  
+	$retrive_data = WC()->session->get('session_vars');
+	if(!empty($retrive_data ) && ($retrive_data['customertype'] == "")){ ?>
+		<div class="wc-proceed-to-checkout">
+			<?php do_action( 'woocommerce_proceed_to_checkout' ); ?>
+		</div>
+	<?php } ?>
 	</div>
 
 	<?php do_action( 'woocommerce_after_cart_totals' ); ?>

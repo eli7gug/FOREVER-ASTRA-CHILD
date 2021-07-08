@@ -25,11 +25,50 @@ get_header(); ?>
 		    <h1>הזמנה מהירה</h1>
 			<div class="cart-search">
 				<div class="search-by-sku">
-					<input type="search" class="search_sku_term" placeholder="<?php esc_html_e( 'Added by SKU #', 'asta-child' ); ?>" id="search_sku_term" name="search_sku_term">
+					<select name="search_sku_term" class="search_sku_term">
+						<option value="0" selected ><?php echo __('Added by SKU #','astra-child')?></option>
+						<?php
+						$args = array(
+							'post_type' => 'product', 
+							'posts_per_page' => -1
+						);
+						
+						$wcProductsArray = get_posts($args);
+						
+						if (count($wcProductsArray)) {
+							foreach ($wcProductsArray as $productPost) {
+								$productSKU = get_post_meta($productPost->ID, '_sku', true);
+								$productTitle = get_the_title($productPost->ID);
+						
+								echo '<option value="'.$productSKU.'" >' . $productSKU . '</option>';
+							}
+						}
+						?>
+					</select>
 				</div>
 				<div class="search-by-name">
-					<input type="search" class="search_name_term" id="search_name_term" name="search_name_term" value="<?php echo get_search_query(); ?>" placeholder="<?php esc_html_e( 'Added by product name', 'asta-child' ); ?>">
+					<select name="search_name_term" class="search_name_term">
+						<option value="0" selected ><?php echo __('Added by product name','astra-child')?></option>
+						<?php
+						$args = array(
+							'post_type' => 'product', 
+							'posts_per_page' => -1
+						);
+						
+						$wcProductsArray = get_posts($args);
+						
+						if (count($wcProductsArray)) {
+							foreach ($wcProductsArray as $productPost) {
+								$productSKU = get_post_meta($productPost->ID, '_sku', true);
+								$productTitle = get_the_title($productPost->ID);
+						
+								echo '<option value="'.$productTitle.'" >' . $productTitle . '</option>';
+							}
+						}
+						?>
+					</select>
 				</div>
+
 			</div>
 			<div class="pdt_msg_error"></div>
 			<div class="quick-order-accordion">
@@ -67,7 +106,7 @@ get_header(); ?>
 										<tr>
 											<th class="product-sku"><?php esc_html_e( 'SKU', 'woocommerce' ); ?></th>
 											<th class="product-name"><?php esc_html_e( 'Product', 'woocommerce' ); ?></th>
-											<th class="product-cc"><?php esc_html_e( 'value', 'woocommerce' ); ?> <span class="cc-font"> CC</span></th>
+											<th class="product-cc"><!--<?php esc_html_e( 'value', 'woocommerce' ); ?>--><span class="cc-font"> CC</span></th>
 											<th class="product-quantity"><?php esc_html_e( 'Count', 'woocommerce' ); ?></th>
 											<th class="product-subtotal"><?php esc_html_e( 'Unit Price', 'ti-woocommerce-wishlist' ); ?> </th>
 										</tr>

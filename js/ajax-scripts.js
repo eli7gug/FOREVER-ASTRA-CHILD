@@ -8,12 +8,12 @@ $(document).ready(function(){
       }
     }
   });
-  $("input.search_sku_term").bind("keypress", function(e){
-
-    if(e.which == 13){
-      if(e.target.value != '')  {
-        var pdt_sku= e.target.value;
-        $('input.search_name_term').val('');
+  $("select.search_sku_term").on("change", function(e){
+    var sku_selected = $("select.search_sku_term option:selected").val();
+    console.log(sku_selected);
+      if(sku_selected != '0')  {
+        var pdt_sku= sku_selected;
+        $('select.search_name_term').select2('val','0');
         $('table.quick-order-accordion-table tbody > tr').show();
         $.ajax({
           url: ajax_obj.ajaxurl,
@@ -71,15 +71,16 @@ $(document).ready(function(){
           }
         });
       }
-    }
+    
 
   });
 
-  $("input.search_name_term").bind("keypress", function(e){
-    if(e.which == 13){
-      if(e.target.value != '')  {
-        var pdt_name= e.target.value;
-        $('input.search_sku_term').val('');
+  $("select.search_name_term").bind("change", function(e){
+    
+    var name_selected = $("select.search_name_term option:selected").val();
+      if(name_selected != '0')  {
+        var pdt_name= name_selected;
+        $('select.search_sku_term').select2('val','0');
         $('table.quick-order-accordion-table tbody > tr').show();
         $.ajax({
           url: ajax_obj.ajaxurl,
@@ -139,24 +140,182 @@ $(document).ready(function(){
           }
         });
       }
-    }
+    
 
+  });
+  
+    // on clear select, close the active accordion
+  $("select.search_name_term,select.search_sku_term").bind("change", function(e){
+    if($("select.search_sku_term option:selected").val() == '0' && $("select.search_name_term option:selected").val() == 0){
+      $('.accordion.active').click();
+    }
+  });
+
+
+  $("button.find_by_city").on("click", function(e){
+    $(this).addClass('loading');
+    var city_selected = $(this).prev('.sponsor_by_city').val().split(',')[0];
+    console.log(city_selected);
+    if(city_selected != '')  {
+        $.ajax({
+            url: ajax_obj.ajaxurl,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+            "city_selected" : city_selected,
+            'action': 'get_sponsor_by_city',
+            },
+            success: function (response) {
+                console.log(response);
+                $("button.find_by_city").removeClass('loading');
+                if(response.data.msg == ""){
+                    var sponsor_num = response.data.sponsor[0].current_meta_agent_num;
+                    var sponsor_name = response.data.sponsor[0].current_meta_agent_name;
+                    var sponsor_phone = response.data.sponsor[0].meta_phone;
+                    var sponsor_address = response.data.sponsor[0].meta_address1;
+                    var sponsor_city = response.data.sponsor[0].meta_city;
+                    //$('.single_reservation_details').show();
+                    $('.sponsor_msg_error').empty();
+                    $('.sponsor_details_wrapper h4,.sponsor_details_wrapper h5').empty();
+                    $('.sponsor_details_wrapper').show();
+                    $('.sponsor_detail_num').append(sponsor_num);
+                    $('.sponsor_detail_name').append(sponsor_name);
+                    $('.sponsor_detail_phone').append(sponsor_phone);
+                    $('.sponsor_detail_address').append(sponsor_address);
+                    $('.sponsor_detail_city').append(sponsor_city);
+                }
+                else{
+                    msg_sponsor = response.data.msg;
+                    $('.sponsor_details_wrapper').hide();
+                    $('.sponsor_msg_error').html(msg_sponsor);
+
+                }
+            },
+            error: function (err) {
+                console.log(err);   
+                $("button.find_by_city").removeClass('loading'); 
+            }
+        });
+    }
+  });
+
+  
+  $('.agent_name').select2({
+    minimumInputLength: 3,
+    language: "he",
+    ajax: {
+        url: ajax_obj.ajaxurl,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+              q: params.term, // search term
+              action : 'search_sponsor'     
+            };
+        },
+        processResults: function( response ) {
+            $("button.find_by_name").attr('disabled',false);
+            return {
+                results: response
+            };
+        },
+        cache: true
+    },
   });
 
 
 
-  // on clear input, close the active accordion
-  $("input.search_sku_term,input.search_name_term").keyup(function() {
+  $("button.find_by_name").on("click", function(e){
+    $(this).addClass('loading');
+    var sponsor_selected = $('select.agent_name option:selected').val();
+    console.log(sponsor_selected);
+    if(sponsor_selected != 0)  {
+        $.ajax({
+            url: ajax_obj.ajaxurl,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+            "sponsor_selected" : sponsor_selected,
+            'action': 'get_sponsor_by_name',
+            },
+            success: function (response) {
+                console.log(response);
+                $("button.find_by_name").removeClass('loading');
+                if(response.data.msg == ""){
+                    var sponsor_num = response.data.sponsor[0].current_meta_agent_num;
+                    var sponsor_name = response.data.sponsor[0].current_meta_agent_name;
+                    var sponsor_phone = response.data.sponsor[0].meta_phone;
+                    var sponsor_address = response.data.sponsor[0].meta_address1;
+                    var sponsor_city = response.data.sponsor[0].meta_city;
+                    $('.sponsor_msg_error').empty();
+                    $('.sponsor_details_wrapper h4,.sponsor_details_wrapper h5').empty();
+                    $('.sponsor_details_wrapper').show();
+                    $('.sponsor_detail_num').append(sponsor_num);
+                    $('.sponsor_detail_name').append(sponsor_name);
+                    $('.sponsor_detail_phone').append(sponsor_phone);
+                    $('.sponsor_detail_address').append(sponsor_address);
+                    $('.sponsor_detail_city').append(sponsor_city);
+                }
+                else{
+                    msg_sponsor = response.data.msg;
+                    $('.sponsor_details_wrapper').hide();
+                    $('.sponsor_msg_error').html(msg_sponsor);
 
-    if (!this.value) {
-      if($('.accordion').hasClass('active')){
-        $('.accordion.active').click();
-      }
+                }
+            },
+            error: function (err) {
+                console.log(err);    
+                $("button.find_by_name").removeClass('loading');
+            }
+        });
     }
 
   });
+
+  $('#create_order_submit').click(function(e){
+    var cust_type = $("input[name=cust_type]:checked:checked").val();
+    console.log(cust_type);
+    $.ajax({
+        url: ajax_obj.ajaxurl,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+        "cust_type" : cust_type,
+        'action': 'create_customer_order',
+        },
+        success: function(){
+            window.location.href = ajax_obj.woo_shop_url;
+        },
+        error: function(results) {
+            alert('There was an error ' + results);
+        }
+    });
+  });
+
+  
+  $('.back-private-purchase').click(function(e){
+    $.ajax({
+        url: ajax_obj.ajaxurl,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+        'action': 'unset_customer_order_session',
+        },
+        success: function(){
+            window.location.href = ajax_obj.woo_shop_url;
+        },
+        error: function(results) {
+            alert('There was an error ' + results);
+        }
+    });
+  });
+
+
+
 
 });
+
+
 
 
 

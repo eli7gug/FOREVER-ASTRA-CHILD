@@ -47,18 +47,25 @@ if ( $product->is_in_stock() ) : ?>
 		?>
 
 		<button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
+		<div class="after-add-cart">
+		<div class="download_file_wrapper">
+			<?php if( get_field('upload_file') ): 
+				$url = wp_get_attachment_url(get_field('upload_file') ); ?>
+				<a href="<?php echo esc_html($url); ?>" title="<?php echo __('PDF', 'astra-child');?>" target="_blank">
+					<?php echo __('Download file', 'astra-child');?>			
+				</a>
+			<?php endif; ?>
+		</div>
 		<!-- <a class="product-share-popup">Share</a> -->
-		 <div class="product-share-wrapper">
+		<div class="product-share-wrapper">
 		 	<?php 
 			global $wp;
 			$current_url = home_url( $_SERVER['REQUEST_URI'] );
 			echo do_shortcode('[addtoany url="' . $current_url . '" title="' . esc_html( $product->single_add_to_cart_text()) . '"]') ;
 			?>
 		 </div> 
-
-	
-
 		<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
+		</div>
 	</form>
 
 	<?php do_action( 'woocommerce_after_add_to_cart_form' ); ?>

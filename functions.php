@@ -30,6 +30,7 @@ function child_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
 add_theme_support('woocommerce');
 
+
 function astra_child_setup() {
     load_child_theme_textdomain( 'astra-child', get_stylesheet_directory().'/languages' );
 }
@@ -282,6 +283,7 @@ function show_attributes() {
  function my_account_new_endpoints() {
  	add_rewrite_endpoint( 'savedaddresses', EP_ROOT | EP_PAGES );
 	add_rewrite_endpoint( 'orders-by-agent', EP_ROOT | EP_PAGES );
+    add_rewrite_endpoint( 'create-customer-order', EP_ROOT | EP_PAGES );
  }
 
   /**
@@ -301,6 +303,16 @@ function show_attributes() {
      get_template_part('my-account-savedaddresses');
  }
 
+    /**
+  * Get new endpoint content
+  */
+  // Create customer order
+  add_action( 'woocommerce_account_create-customer-order_endpoint', 'create_customer_order_endpoint_content' );
+  function create_customer_order_endpoint_content() {
+      get_template_part('page-create-order-customer');
+  }
+ 
+
  
 
  
@@ -315,11 +327,12 @@ function show_attributes() {
  		
 		'dashboard'          => __( 'Dashboard', 'woocommerce' ),
         'edit-account'    	=> __( 'Account details', 'woocommerce' ),
-        'orders'             => __( 'Order history', 'asta-child' ),
-        'saved-carts'        => __( 'Saved Carts', 'asta-child' ),
-        'orders-by-agent'        => __( 'Orders by current agent', 'asta-child' ),
+        'orders'             => __( 'Order history', 'astra-child' ),
+        'saved-carts'        => __( 'Saved Carts', 'astra-child' ),
+        'create-customer-order'        => __( 'Create an order for a customer', 'astra-child' ),
+        'orders-by-agent'        => __( 'Orders by current agent', 'astra-child' ),
         'edit-address'       => __( 'Addresses', 'woocommerce' ),
-		'savedaddresses'     => __( 'כתובות שמורות', 'woocommerce' ),
+		//'savedaddresses'     => __( 'כתובות שמורות', 'woocommerce' ),
  		'customer-logout'    => __( 'Logout', 'woocommerce' )
  	);
  	return $menuOrder;
@@ -620,6 +633,17 @@ function wpdocs_ahir_redirect_after_logout() {
     exit();
 }
 
+function wpse_19692_registration_redirect() {
+    if ( WC()->cart->get_cart_contents_count() == 0 ) {
+        return home_url('/signup-success');
+    }
+    else{
+        return wc_get_checkout_url();
+    }  
+}
+
+//redirect after registration to sigup success or to checkout
+add_filter( 'woocommerce_registration_redirect', 'wpse_19692_registration_redirect' );
 
 //add CC field under price in product
 add_action( 'woocommerce_product_options_pricing', 'misha_adv_product_options');
@@ -632,8 +656,9 @@ function misha_adv_product_options(){
 		'value'   => get_post_meta( get_the_ID(), 'cc_value', true ),
 		'label'   => __('CC value', 'astra-child'),
 	) );
- 
 	echo '</div>';
+
+
  
 }
  
@@ -641,6 +666,8 @@ add_action( 'woocommerce_process_product_meta', 'misha_save_fields', 10, 2 );
 function misha_save_fields( $id, $post ){
 		update_post_meta( $id, 'cc_value', $_POST['cc_value'] );
 }
+
+
 
 
 
@@ -783,20 +810,19 @@ function add_sponsor_header(){
     if ( !is_user_logged_in()){
         if(isset($_COOKIE['agent'])){
             $current_meta_agent_num = get_user_meta($_COOKIE['agent'], 'priority_customer_number')[0];
-            $current_meta_agent_name = get_user_meta($_COOKIE['agent'], 'first_name')[0].' '.get_user_meta($_COOKIE['agent'], 'last_name')[0] ;
+            $current_meta_agent_name = get_user_meta($_COOKIE['agent'], 'first_name')[0].' '.get_user_meta($_COOKIE['agent'], 'last_name')[0] ;?>
+            <dl class="extra_header">
+                <span class="sponsor_num_wrapper">
+                    <dt><?php echo __('Shop:', 'astra-child');?></dt>
+                    <dd>
+                        <?php echo $current_meta_agent_num ?>
+                        <span><?php echo __('(Marketer number)', 'astra-child');?></span>
+                    </dd>
+                </span>
+            </dl>
+    <?php
         }
-    ?>
-    	<dl class="extra_header">
-            <span class="sponsor_num_wrapper">
-                <dt><?php echo __('Shop:', 'astra-child');?></dt>
-                <dd>
-                    <?php echo $current_meta_agent_num ?>
-                    <span><?php echo __('(Marketer number)', 'astra-child');?></span>
-                </dd>
-            </span>
-		</dl>
-       
-    <?php }
+    }
 } 
 
 /*
@@ -946,6 +972,7 @@ function SendSMS($message_text,$recepients) {
     return $response;
 }
 
+
 //Only show products in the front-end search results
 function lw_search_filter_pages($query) {
     if ($query->is_search) {
@@ -965,6 +992,105 @@ function change_order_address( $checkout_fields ) {
     $checkout_fields['billing']['billing_postcode']['priority'] = 90;
 	return $checkout_fields;
 }
+
+//Design login page
+function my_login_logo() { ?>
+    <style type="text/css">
+        #login h1 a, .login h1 a {
+        background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/login-logo.png);
+		height:65px;
+		width:250px;
+		background-size: 250px 65px;
+		background-repeat: no-repeat;
+        	padding-bottom: 20px;
+        }
+    </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'my_login_logo' );
+
+
+function my_login_style() { ?>
+    <style type="text/css">
+        #login .button-primary {
+			background: #f8c005;
+			border-color: #f8c005;
+			color: #222;
+			font-weight: 700;
+			text-decoration: none;
+			text-shadow: none;
+		}
+		#login .button-primary {
+			background: #f8c005;
+			border-color: #f8c005;
+			color: #222;
+			font-weight: 700;
+			text-decoration: none;
+			text-shadow: none;
+		}
+		#login .button-secondary, #login a {
+			color: #222222
+		}
+		#login .button-secondary:hover, #login a:hover {
+			color: #999999
+		}
+		.login #backtoblog, .login #nav {
+			text-align:center
+		}
+    </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'my_login_style' );
+
+
+function my_login_logo_url() {
+    return home_url();
+}
+add_filter( 'login_headerurl', 'my_login_logo_url' );
+
+function my_login_logo_url_title() {
+    return 'Forever Israel';
+}
+add_filter( 'login_headertitle', 'my_login_logo_url_title' );
+
+
+//if create order for customer, add it to menu
+add_filter('wp_nav_menu_items' ,'add_customer_type', 999, 999);
+
+function add_customer_type($items, $args) {
+        $retrive_data = WC()->session->get('session_vars');
+        if(!empty($retrive_data ) && ($retrive_data['customertype'] != "")){
+            $menu_name='';
+            if($retrive_data['customertype'] == "retail_customer"){
+                $menu_name = __('Retail customer', 'astra-child');
+            }
+            elseif($retrive_data['customertype'] == "club_customer"){
+                $menu_name = __('Club customer / marketer', 'astra-child');
+            }
+            $items .= '<li class="menu-item">'
+                  . '<p><span style="color: #0000ff;"><em>'.__('Create an order for: ', 'astra-child').$menu_name.'</em></span></p>'
+                  . '</li>';
+        }
+    return $items;
+}
+
+
+//redirect cart to checkout if create order for customer
+add_action( 'template_redirect', 'redirect_visitor');
+
+function redirect_visitor(){
+    if ( is_page( 'checkout' ) || is_checkout() ) {
+        $retrive_data = WC()->session->get( 'session_vars' );
+        //  if create order for customer -  disable checkout
+        if(!empty($retrive_data ) && ($retrive_data['customertype'] != "")){
+            global $woocommerce;
+            //$cart_url = $woocommerce->cart->get_cart_url();
+            wp_safe_redirect(wc_get_page_permalink( 'cart' ));
+            exit;
+        }
+    }
+}
+
+
+
 
 
 
