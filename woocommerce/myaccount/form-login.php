@@ -22,6 +22,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 <?php if ( 'yes' === get_option( 'woocommerce_enable_myaccount_registration' ) ) : ?>
 
+
 <div class="u-columns col2-set" id="customer_login">
 
 	<div class="u-column1 col-1 tab-reg" id="tab1C">
@@ -34,8 +35,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 	<div class="u-column2 col-2 tab-reg" id="tab2C">
         <ul class="steps">
-			<!-- Change link to dynamic!!! --><li class="step first-step past-step"><a class="step-link" href="https://forever.ussl.shop/join-step-1/">1</a></li>
-			<li class="step second-step past-step"><a class="step-link" href="https://forever.ussl.shop/join-step-2/">2</a></li>
+			<li class="step first-step past-step"><a class="step-link" href="/join-step-1/">1</a></li>
+			<li class="step second-step past-step"><a class="step-link" href="/join-step-2/">2</a></li>
 			<li class="step third-step active-step"><span class="step-link">3</span></li>
 			<li class="step last-step"><span class="step-link">4</span></li>
 		</ul>
@@ -187,26 +188,9 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                                 </span>
                             </label>
                             <div class="select_agent_wrap">
-								<select class="agent_name" name="agent_name" id="agent_name" placeholder="<?php echo __('Search Sponsor','astra-child')?>">
+                                <select class="agent_name" name="agent_name" id="agent_name" placeholder="<?php echo __('Search Sponsor','astra-child')?>">
 									<option value=""></option>
 								</select>
-                                <!-- <select name="agent_name" class="agent_name" id="agent_name" placeholder="<?php echo __('Search Sponsor','astra-child')?>">
-                                    <option value="0" selected ><?php echo __('Search Sponsor','astra-child')?></option>
-                                    <?php if(false):
-                                    foreach ($users as $user) {
-                                        $user_info = get_userdata($user->ID);
-                                        $meta_number = get_user_meta($user->ID, 'priority_customer_number')[0];
-                                        $meta_name = get_user_meta($user->ID, 'first_name')[0].' '.get_user_meta($user->ID, 'last_name')[0];
-										$meta_phone = get_user_meta($user->ID, 'billing_phone')[0];
-                                        $meta_email = $user_info->user_email;
-                                        $checked = ($current_meta_agent == $user->ID) ? 'selected="selected"' : '';
-                                        $user_id = $user->ID;
-                                        ?>
-                                        <option data-num="<?php echo strtolower($meta_number) ?>" data-phone="<?php echo $meta_phone ?>" data-email="<?php echo $meta_email ?>" value="<?php echo $user_id ?>" <?php echo $checked ?>>
-                                            <?php echo $meta_name.' '.$meta_number;  ?>
-                                        </option>
-                                    <?php  } endif;?>
-                                </select> -->
                                 <button type="button" class="find_by_name" disabled><?php echo __('Find','astra-child')?></button>
                             </div>
                             <input type="radio" class="input-radio" name="sponsor_find" id="sponsor_city" value="sponsor_city">
@@ -220,6 +204,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                             <div class="select_city_wrapper">
                                 <input type="text" class="input-text sponsor_by_city" name="sponsor_by_city" autocomplete="off" placeholder="<?php echo __('City or locality of residence','astra-child')?>" value="<?php echo ( ! empty( $_POST['sponsor_city'] ) ) ? esc_attr( wp_unslash( $_POST['sponsor_city'] ) ) : ''; ?>">
                                 <button type="button" class="find_by_city"><?php echo __('Find','astra-child')?></button>
+                                <input type="hidden" class="random_sponsor" name="random_sponsor" value=""/>
                             </div>
                             <div class="sponsor_details_wrapper">
                                 <h4 class="sponsor_detail_num"></h4>
@@ -232,7 +217,6 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                         </p>
                         <?php }?>
 				</div>
-				
 				<?php if(false):?>
 					<div class="join-form-sponsor-contact woocommerce-signup-fields">
 						<h3><?php echo __('Contact with the agent','astra-child')?></h3>

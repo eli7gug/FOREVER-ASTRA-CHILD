@@ -20,14 +20,13 @@ define( 'ASTRA_CHILD_THEME_VERSION', '1.0.1' );
 function child_enqueue_styles() {
 
 	wp_enqueue_style( 'astra-child-theme-css', get_stylesheet_directory_uri() . '/style.css', array('astra-theme-css'), ASTRA_CHILD_THEME_VERSION, 'all' );
-    wp_enqueue_style( 'select2', get_stylesheet_directory_uri().'/css/select2.css' );
-	wp_enqueue_script( 'select2', get_stylesheet_directory_uri() . '/js/select2.min.js', array( 'jquery' ) );
+    wp_enqueue_script('child-ajax-scripts', get_stylesheet_directory_uri() . '/js/ajax-scripts.js', array('jquery'));
     wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC_ORCeyeyZLwdOAtUTldORNlArbT5-MbM');
     wp_register_script('custom-js',get_stylesheet_directory_uri().'/js/custom.js', ['jquery'],time());
     wp_enqueue_script( 'custom-js' );
 }
 
-add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
+add_action( 'wp_enqueue_scripts', 'child_enqueue_styles');
 add_theme_support('woocommerce');
 
 
@@ -136,47 +135,25 @@ function wpd_wc_add_product_reviews() {
  **/
 function wc_remove_checkout_fields( $fields ) {
 
-    // Billing fields
-    //unset( $fields['billing']['billing_company'] );
-    //unset( $fields['billing']['billing_email'] );
-    //unset( $fields['billing']['billing_phone'] );
-    unset( $fields['billing']['billing_state'] );
-	unset( $fields['billing']['billing_country'] );
-    //unset( $fields['billing']['billing_first_name'] );
-    //unset( $fields['billing']['billing_last_name'] );
-    //unset( $fields['billing']['billing_address_1'] );
     unset( $fields['billing']['billing_address_2'] );
-    //unset( $fields['billing']['billing_city'] );
-    //unset( $fields['billing']['billing_postcode'] );
-
-    // Shipping fields
-    //unset( $fields['shipping']['shipping_company'] );
-    //unset( $fields['shipping']['shipping_phone'] );
-    unset( $fields['shipping']['shipping_state'] );
-	unset( $fields['shipping']['shipping_country'] );
-    //unset( $fields['shipping']['shipping_first_name'] );
-    //unset( $fields['shipping']['shipping_last_name'] );
-    //unset( $fields['shipping']['shipping_address_1'] );
     unset( $fields['shipping']['shipping_address_2'] );
-    //unset( $fields['shipping']['shipping_city'] );
-    //unset( $fields['shipping']['shipping_postcode'] );
-
-    // Order fields
-    //unset( $fields['order']['order_comments'] );
-
     return $fields;
 }
 add_filter( 'woocommerce_checkout_fields', 'wc_remove_checkout_fields' );
 
-/**
-*Reorder billing fields
+
+/*
+*Remove all possible fields
 **/
-add_filter( 'woocommerce_checkout_fields', 'forever_city_first' );
- 
-function forever_city_first( $checkout_fields ) {
-	$checkout_fields['billing']['billing_postcode']['priority'] = 64;
-	return $checkout_fields;
+function wc_remove_address_fields( $fields ) {
+
+
+   unset( $fields['country'] );
+   unset( $fields['sate'] );
+   return $fields;
 }
+add_filter( 'woocommerce_default_address_fields', 'wc_remove_address_fields' );
+
 
 /**
  *Add Product images to checkout Page
@@ -239,7 +216,7 @@ function astra_get_search_form( $echo = true ) {
 
 
 /**
-* Add Custom Attributes CC to single product
+* Add Custom Attributes to single product
 **/
 function sp_titles_template_variables_array($array) {
 	$array[] = 'wc_product_attributes';
@@ -265,14 +242,7 @@ function sp_titles_template_replace_array($array) {
 }
 add_filter('seopress_titles_template_replace_array', 'sp_titles_template_replace_array');
 
-/**
-* Display Attributes CC in meta of single product
-**/
-add_action ( 'woocommerce_product_meta_end', 'show_attributes', 25 );
-function show_attributes() {
-  global $product;
-  wc_display_product_attributes( $product );
-}
+
 
 
 /**
@@ -303,7 +273,7 @@ function show_attributes() {
      get_template_part('my-account-savedaddresses');
  }
 
-    /**
+     /**
   * Get new endpoint content
   */
   // Create customer order
@@ -311,12 +281,8 @@ function show_attributes() {
   function create_customer_order_endpoint_content() {
       get_template_part('page-create-order-customer');
   }
- 
 
- 
 
- 
- 
  
  /**
   * Edit my account menu order
@@ -448,20 +414,23 @@ function my_account_saving_extra_field( $user_id ) {
     if( isset($_POST['agent_name']))
         update_user_meta( $user_id, 'agent_name', $_POST['agent_name'] );
     else if(isset($_POST['sponsor_by_city'])){
-        $sponsor_city = $_POST['sponsor_by_city'];
-        $user_by_city_array = array();
-        $users = get_users(); 
-        foreach ($users as $user) {
-            $user_info = get_userdata($user->ID);
-            $meta_city = get_user_meta($user->ID, 'billing_city')[0];
-            // if($meta_city == $sponsor_city){
-            if (strpos(strtolower($sponsor_city), $meta_city) !== false) {
-                $user_by_city_array[] = $user->ID;
-            }
-        }
-        $city_key = array_rand($user_by_city_array);
-        $city_value = $user_by_city_array[$city_key];
-        update_user_meta( $user_id, 'agent_name', $city_value );
+        // $sponsor_city = $_POST['sponsor_by_city'];
+        // $user_by_city_array = array();
+        // $users = get_users(); 
+        // foreach ($users as $user) {
+        //     $user_info = get_userdata($user->ID);
+        //     $meta_city = get_user_meta($user->ID, 'billing_city')[0];
+        //     // if($meta_city == $sponsor_city){
+        //     if (strpos(strtolower($sponsor_city), $meta_city) !== false) {
+        //         $user_by_city_array[] = $user->ID;
+        //     }
+        // }
+        // $city_key = array_rand($user_by_city_array);
+        // $city_value = $user_by_city_array[$city_key];
+        $sponsor_random = $_POST['random_sponsor'] ;
+        update_user_meta( $user_id, 'agent_name', $sponsor_random);
+        //remove this user to the random list
+        update_user_meta( $sponsor_random, 'random_assignment', 'off' );  
     }
     // if( isset($_POST['sponsor_contact']) )
     //     update_user_meta( $user_id, 'sponsor_contact', $_POST['sponsor_contact'] );
@@ -478,6 +447,10 @@ function my_account_saving_extra_field( $user_id ) {
         update_user_meta( $user_id, 'agree_privacy', $_POST['agree_privacy'] );
     else
         update_user_meta( $user_id, 'agree_privacy', 'off' );
+    if( isset($_POST['random_assignment']) )
+        update_user_meta( $user_id, 'random_assignment', $_POST['random_assignment'] );
+    else
+        update_user_meta( $user_id, 'random_assignment', 'off' ); 
     if( isset($_POST['billing_city']) && ! empty($_POST['billing_city']) )
         update_user_meta( $user_id, 'billing_city', sanitize_text_field($_POST['billing_city']) );
     if( isset($_POST['billing_address_1']) && ! empty($_POST['billing_address_1']) )
@@ -546,6 +519,12 @@ function add_extra_fields( $user )
                 <th><label for="agree_privacy"><?php echo __('I agree to the terms of privacy','astra-child')?></label></th>
                 <td> 
                     <input type="checkbox" name="agree_privacy"   <?php  checked( get_user_meta( $user->ID, 'agree_privacy', true ), 'on' ); ?> value="on" />
+                </td>   
+            </tr>
+            <tr>
+                <th><label for="random_assignment"><?php echo __('Participate to the random assignment','astra-child')?></label></th>
+                <td> 
+                    <input type="checkbox" name="random_assignment"   <?php  checked( get_user_meta( $user->ID, 'random_assignment', true ), 'on' ); ?> value="on" />
                 </td>   
             </tr>
         </table>
@@ -715,7 +694,9 @@ function custom_woocommerce_empty_cart_action() {
 	if( isset( $_POST['empty_cart'] ) && $_SERVER['REQUEST_METHOD'] == "POST" ) {
 		WC()->cart->empty_cart();
 		//$referer  = wp_get_referer() ? esc_url( remove_query_arg( 'empty_cart' ) ) : wc_get_cart_url();
-		wp_safe_redirect(  wc_get_cart_url() );
+        if ( is_page( 'cart' ) || is_cart() ) {
+		    wp_safe_redirect(  wc_get_cart_url() );
+        }
 	}
 }
 
@@ -724,13 +705,22 @@ add_filter( 'woocommerce_get_price_html', 'cc_value_after_price_loop' );
 function cc_value_after_price_loop( $price ) { 
     global $product;
     $cc = $product->get_meta( 'cc_value', true );
+    if(is_product())
+        wc_display_product_attributes( $product );
     if ( !empty($cc) ) {
         return $price . '<span class="product-cc">' .' | '. $cc .' CC</span>';
     }else { 
         return $price; 
     } 
 }
-
+/**
+* Display Attributes in meta of single product
+**/
+//add_action ( 'woocommerce_product_meta_end', 'show_attributes', 25 );
+function show_attributes() {
+  global $product;
+  wc_display_product_attributes( $product );
+}
 
 /*
 * Add agent id in order meta
@@ -939,10 +929,10 @@ if ( ! is_user_logged_in()){
     }
 }
 
-
+add_option('sms_apitoken', 't0d6xr6ak16q9neyvdm5sadpy');
 function SendSMS($message_text,$recepients) {
     $sms_user = "flpil21"; // User Name (Provided by Inforu)
-    $sms_apitoken = "t0d6xr6ak16q9neyvdm5sadpy"; // Password (Provided by Inforu)
+    $sms_apitoken = get_option('sms_apitoken'); // Password (Provided by Inforu)
     $sms_sender = "FOREVER"; //
     $message_text = preg_replace( "/\r|\n/", "", $message_text); // remove line breaks
     $xml = '';
@@ -984,13 +974,28 @@ function lw_search_filter_pages($query) {
      
 add_filter('pre_get_posts','lw_search_filter_pages');
 
-add_filter( 'woocommerce_checkout_fields', 'change_order_address' );
 
-function change_order_address( $checkout_fields ) {
-	$checkout_fields['billing']['billing_city']['priority'] = 50;
-    $checkout_fields['billing']['billing_address_1']['priority'] = 70;
-    $checkout_fields['billing']['billing_postcode']['priority'] = 90;
-	return $checkout_fields;
+// add_filter( 'woocommerce_checkout_fields', 'change_order_address' );
+
+// function change_order_address( $checkout_fields ) {
+// 	$checkout_fields['billing']['billing_city']['priority'] = 50;
+//     $checkout_fields['billing']['billing_address_1']['priority'] = 70;
+//     $checkout_fields['billing']['billing_postcode']['priority'] = 90;
+//     $checkout_fields['shipping']['shipping_city']['priority'] = 50;
+//     $checkout_fields['shipping']['shipping_address_1']['priority'] = 70;
+//     $checkout_fields['shipping']['shipping_postcode']['priority'] = 90;
+// 	return $checkout_fields;
+// }
+
+add_filter( 'woocommerce_default_address_fields', 'misha_reorder' );
+
+function misha_reorder( $address_fields ) {
+	// as you can see, no needs to specify a field group anymore
+    $address_fields['city']['priority'] = 50;
+    $address_fields['address_1']['priority'] = 60;
+    $address_fields['address_2']['priority'] = 61;
+    $address_fields['postcode']['priority'] = 90;
+	return $address_fields;
 }
 
 //Design login page
@@ -1052,23 +1057,41 @@ function my_login_logo_url_title() {
 add_filter( 'login_headertitle', 'my_login_logo_url_title' );
 
 
+/* roy add role  */
+add_role( 'wholesaler', 'Wholesaler', get_role( 'customer' )->capabilities );
+
+global $wpdb;
+$table_price_name = $wpdb->prefix . 'p18a_pricelists';
+$sql = "SELECT DISTINCT price_list_role FROM $table_price_name WHERE 1";
+$roles_array = $wpdb->get_results($sql);
+foreach($roles_array as $role){
+    add_role( strtolower($role->price_list_role),$role->price_list_role, get_role( 'customer' )->capabilities );
+}
+
+
+
+
+// Fix - Set woocommerce_hide_invisible_variations to true so disabled variation attributes are hidden on product pages. WooCommerce 3.3.2
+add_filter( 'woocommerce_hide_invisible_variations', '__return_false', 10);
+
 //if create order for customer, add it to menu
-add_filter('wp_nav_menu_items' ,'add_customer_type', 999, 999);
+add_filter('wp_nav_menu_user-menu_items' ,'add_customer_type', 999, 999);
 
 function add_customer_type($items, $args) {
-        $retrive_data = WC()->session->get('session_vars');
-        if(!empty($retrive_data ) && ($retrive_data['customertype'] != "")){
-            $menu_name='';
-            if($retrive_data['customertype'] == "retail_customer"){
-                $menu_name = __('Retail customer', 'astra-child');
-            }
-            elseif($retrive_data['customertype'] == "club_customer"){
-                $menu_name = __('Club customer / marketer', 'astra-child');
-            }
-            $items .= '<li class="menu-item">'
-                  . '<p><span style="color: #0000ff;"><em>'.__('Create an order for: ', 'astra-child').$menu_name.'</em></span></p>'
-                  . '</li>';
+    $retrive_data = WC()->session->get('session_vars');
+    if(!empty($retrive_data ) && ($retrive_data['customertype'] != "")){
+        if($retrive_data['customertype'] == "retail_customer"){
+            $menu_name = __('Retail customer', 'astra-child');
         }
+        elseif($retrive_data['customertype'] == "club_customer"){
+            $menu_name = __('Club customer / marketer', 'astra-child');
+        }
+        //if( $args->menuslug == 'user-menu' ){
+        $items .= '<li class="menu-item">'
+                . '<p><span><em>'.__('Create an order for: ', 'astra-child').$menu_name.'</em></span></p>'
+                . '</li>';
+        //}
+    }
     return $items;
 }
 
@@ -1088,16 +1111,6 @@ function redirect_visitor(){
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

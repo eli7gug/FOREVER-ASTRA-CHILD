@@ -153,10 +153,10 @@ $(document).ready(function(){
 
 
   $("button.find_by_city").on("click", function(e){
-    $(this).addClass('loading');
     var city_selected = $(this).prev('.sponsor_by_city').val().split(',')[0];
     console.log(city_selected);
     if(city_selected != '')  {
+        $(this).addClass('loading');
         $.ajax({
             url: ajax_obj.ajaxurl,
             method: 'POST',
@@ -169,6 +169,7 @@ $(document).ready(function(){
                 console.log(response);
                 $("button.find_by_city").removeClass('loading');
                 if(response.data.msg == ""){
+                    var sponsor_id = response.data.sponsor[0].user_id;
                     var sponsor_num = response.data.sponsor[0].current_meta_agent_num;
                     var sponsor_name = response.data.sponsor[0].current_meta_agent_name;
                     var sponsor_phone = response.data.sponsor[0].meta_phone;
@@ -183,6 +184,7 @@ $(document).ready(function(){
                     $('.sponsor_detail_phone').append(sponsor_phone);
                     $('.sponsor_detail_address').append(sponsor_address);
                     $('.sponsor_detail_city').append(sponsor_city);
+                    $('.random_sponsor').val(sponsor_id);
                 }
                 else{
                     msg_sponsor = response.data.msg;
